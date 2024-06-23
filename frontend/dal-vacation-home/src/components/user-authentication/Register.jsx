@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import FirstFactorAuth from './FirstFactorAuth';
 import SecondFactorAuth from './SecondFactorAuth';
 import ThirdFactorAuth from './ThirdFactorAuth';
@@ -6,6 +6,8 @@ import { Alert, Container } from '@mui/material';
 import ConfirmRegistration from './ConfirmRegistration';
 import { CognitoUserAttribute } from 'amazon-cognito-identity-js';
 import UserPool from '../../util/user-authentication/UserPool';
+import { encryptCipherText } from '../../util/user-authentication/AuthenticationUtil';
+import { getUserData, saveUserRegistration } from '../../services/AuthenticationApiService';
 
 export default function Register() {
   const [authStep, setAuthStep] = useState(0);
@@ -26,7 +28,7 @@ export default function Register() {
       })
     );
     UserPool.signUp(firstFactorAuthData.email, firstFactorAuthData.password, attributeList, null, (error, data) => {
-      if(error) {
+      if (error) {
         setAuthStep(0)
         setShowAlert(true)
         setAlertMessage(error.message)
@@ -39,7 +41,19 @@ export default function Register() {
   }
 
   const registerUser = () => {
-    console.log("Register")
+    let userData = {
+      "email": firstFactorAuthData.email,
+      "firstname": firstFactorAuthData.firstname,
+      "lastname": firstFactorAuthData.lastname,
+      "securityQuestions": JSON.stringify(secondFactorAuthData),
+      "cipherText": encryptCipherText(thirdFactorAuthData.cipherText, thirdFactorAuthData.shiftNumber)
+    }
+    if(saveUserRegistration(userData, cognitoUser)) {
+      alert("User registered")
+    } else {
+      setShowAlert(true)
+      setAlertMessage("Registration failed. Please try again!")
+    }
   }
 
   return (
@@ -51,11 +65,11 @@ export default function Register() {
       }
       {authStep === 0 && <FirstFactorAuth setAuthStep={setAuthStep} setData={setFirstFactorAuthData} isRegister={true} />}
       {authStep === 1 && saveUserToCognito()}
-      {authStep === 2 && <ConfirmRegistration setAuthStep={setAuthStep} cognitoUser={cognitoUser} /> }
+      {authStep === 2 && <ConfirmRegistration setAuthStep={setAuthStep} cognitoUser={cognitoUser} />}
 
       {authStep === 3 && <SecondFactorAuth setAuthStep={setAuthStep} setData={setSecondFactorAuthData} />}
       {authStep === 4 && <ThirdFactorAuth setAuthStep={setAuthStep} setData={setThirdFactorAuthData} />}
-      {authStep === 3 && registerUser()}
+      {authStep === 5 && registerUser()}
     </>
   )
 }

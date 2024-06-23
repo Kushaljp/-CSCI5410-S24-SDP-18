@@ -1,6 +1,6 @@
 import { Button, Container, FormControl, Grid, InputLabel, MenuItem, Select, TextField } from '@mui/material'
 import React from 'react'
-import { SECURITY_QUESTIONS } from '../../util/user-authentication/Constants'
+import { SECURITY_QUESTIONS } from '../../util/Constants'
 
 function SecondFactorAuth({ setAuthStep, setData }) {
   return (

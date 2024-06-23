@@ -11,11 +11,18 @@ function ThirdFactorAuth({ setAuthStep, setData }) {
             id="cipherText"
             label="Cipher Text"
             variant="outlined"
+            onKeyDown={(event) => {
+              const regextext = /^[a-zA-Z\s]+$/;
+              if(!regextext.test(event.key)) {
+                event.preventDefault();
+              }
+            }}
             onChange={(event) => setData(prev => ({ ...prev, cipherText: event.target.value }))} />
         </Grid>
         <Grid item md={12}>
           <TextField
             fullWidth
+            InputProps={{ inputProps: { min: 0 } }}
             type="number"
             id="shiftNumber"
             label="Shift Number"
