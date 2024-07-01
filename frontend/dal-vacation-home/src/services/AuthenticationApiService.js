@@ -1,21 +1,33 @@
 import axios from "axios";
 import { GET_USER_URL, SAVE_USER_URL } from "../util/ApiConstants";
 
-export const saveUserRegistration = async (userData, cognitoUser) => {
+export const saveUserRegistration = async (userData, cognitoUser, authDetails) => {
   try {
-    await axios.post(SAVE_USER_URL, userData);
+    let response = await axios.post(SAVE_USER_URL, userData);
+    if(Object.keys(response.data).length !== 0) {
+      cognitoUser.authenticateUser(authDetails, {
+        onSuccess: () => {
+          cognitoUser.deleteUser((error, data) => {})
+        }
+      })
+      return false;
+    }
     return true;
   } catch (error) {
-    cognitoUser.deleteUser((error, data) => {})
+    cognitoUser.authenticateUser(authDetails, {
+      onSuccess: () => {
+        cognitoUser.deleteUser((error, data) => {})
+      }
+    })
     return false;
   }
 }
 
-export const getUserData = async (email) => {
+export const getUserData = async (email, setUserData) => {
   try {
     const response = await axios.get(GET_USER_URL + email);
-    return response.data.Items[0];
+    setUserData(response.data.Items[0]);
   } catch (error) {
-    return "";
+    setUserData("");
   }
 }
