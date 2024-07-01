@@ -2,7 +2,7 @@ export const encryptCipherText = (cipherText, shift) => {
   let encryptedText = ""
   for (let i = 0; i < cipherText.length; i++) {
     let char = cipherText[i];
-    if(char === " ") {
+    if (char === " ") {
       continue;
     }
     if (char === char.toUpperCase()) {
@@ -15,4 +15,17 @@ export const encryptCipherText = (cipherText, shift) => {
     }
   }
   return encryptedText;
+}
+
+export const formatSecurityQA = (secondFactorAuthData) => {
+  return secondFactorAuthData.q1 + "::" + secondFactorAuthData.a1 + "::" + secondFactorAuthData.q2 + "::" + secondFactorAuthData.a2 + "::" + secondFactorAuthData.q3 + "::" + secondFactorAuthData.a3;
+}
+
+export const setUser = (user) => {
+  console.log(user)
+  sessionStorage.setItem("user", JSON.stringify(user));
+}
+
+export const getUser = () => {
+  return JSON.parse(sessionStorage.getItem("user"));
 }
