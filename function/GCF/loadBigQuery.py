@@ -22,8 +22,8 @@ def fetch_and_load_data(request):
     feedback_table_id = 'Feedback'
 
     # Define API endpoints for fetching data
-    user_api_url = 'https://vyu0d2o6y6.execute-api.us-east-1.amazonaws.com/dev/getData?table_name=User'
-    review_api_url = 'https://vyu0d2o6y6.execute-api.us-east-1.amazonaws.com/dev/getData?table_name=Review'
+    user_api_url = 'https://kiuy4j7k8h.execute-api.us-east-1.amazonaws.com/prod/users'
+    review_api_url = 'https://kiuy4j7k8h.execute-api.us-east-1.amazonaws.com/prod/review'
     
     try:
         # Fetch data from User API
@@ -32,39 +32,37 @@ def fetch_and_load_data(request):
         data_user = response_user.json()
         
         # Check if response contains data
-        if 'body' not in data_user:
-            return {'error': 'No data in response from User API'}, 500
+        if 'Items' not in data_user:
+            return {'error': 'No items in response from User API'}, 500
         
         # Extract user data from API response body
-        users = data_user['body']
+        users = data_user['Items']
         
         # Fetch existing User records from BigQuery
         query_user = f"SELECT * FROM `{project_id}.{dataset_id}.{user_table_id}`"
         existing_users = [dict(row) for row in client.query(query_user).result()]
         
-        # Function to compare two user records excluding 'LoggedIn' attribute
+        # Function to compare two user records
         def is_same_user(user1, user2):
             return (
-                user1['UserName'] == user2['UserName'] and
-                user1['CaesarCipher'] == user2['CaesarCipher'] and
-                user1['Email'] == user2['Email'] and
-                user1['FirstName'] == user2['FirstName'] and
-                user1['LastName'] == user2['LastName'] and
-                user1['Questions'] == user2['Questions'] and
-                user1['Role'] == user2['Role']
+                user1['email']['S'] == user2['Email'] and
+                user1['cipherText']['S'] == user2['CaesarCipher'] and
+                user1['firstname']['S'] == user2['FirstName'] and
+                user1['lastname']['S'] == user2['LastName'] and
+                user1['securityQuestions']['S'] == user2['Questions'] and
+                user1['role']['S'] == user2['Role']
             )
 
         # Prepare data for insertion into User table in BigQuery, excluding existing records
         rows_to_insert_user = [
             {
-                'UserName': user['UserName'],
-                'CaesarCipher': user['CaesarCipher'],
-                'Email': user['Email'],
-                'FirstName': user['FirstName'],
-                'LastName': user['LastName'],
-                'Questions': user['Questions'],
-                'Role': user['Role'],
-                'LoggedIn': user.get('LoggedIn', '0')  # Handle cases where 'LoggedIn' may not be present
+                'Email': user['email']['S'],
+                'CaesarCipher': user['cipherText']['S'],
+                'FirstName': user['firstname']['S'],
+                'LastName': user['lastname']['S'],
+                'Questions': user['securityQuestions']['S'],
+                'Role': user['role']['S'],
+                'LoggedIn': str(user.get('isLoggedIn', {'BOOL': False})['BOOL'])  # Handle cases where 'isLoggedIn' may not be present
             }
             for user in users
             if not any(is_same_user(user, existing_user) for existing_user in existing_users)
@@ -83,11 +81,11 @@ def fetch_and_load_data(request):
         data_review = response_review.json()
         
         # Check if response contains data
-        if 'body' not in data_review:
-            return {'error': 'No data in response from Review API'}, 500
+        if 'Items' not in data_review:
+            return {'error': 'No items in response from Review API'}, 500
         
         # Extract review data from API response body
-        reviews = data_review['body']
+        reviews = data_review['Items']
         
         # Fetch existing Feedback records from BigQuery
         query_feedback = f"SELECT * FROM `{project_id}.{dataset_id}.{feedback_table_id}`"
@@ -96,12 +94,12 @@ def fetch_and_load_data(request):
         # Function to compare two feedback records
         def is_same_feedback(feedback1, feedback2):
             return (
-                str(feedback1['ReviewId']) == str(feedback2['ReviewId']) and
-                str(feedback1['Date']) == str(feedback2['Date']) and
-                str(feedback1['Rating']) == str(feedback2['Rating']) and
-                str(feedback1['RoomId']) == str(feedback2['RoomId']) and
-                str(feedback1['UserId']) == str(feedback2['UserId']) and
-                str(feedback1['Review']) == str(feedback2['Review'])
+                str(feedback1['reviewId']['S']) == str(feedback2['ReviewId']) and
+                str(feedback1['date']['S']) == str(feedback2['Date']) and
+                str(feedback1['rating']['N']) == str(feedback2['Rating']) and
+                str(feedback1['roomNumber']['N']) == str(feedback2['RoomId']) and
+                str(feedback1['userId']['S']) == str(feedback2['UserId']) and
+                str(feedback1['message']['S']) == str(feedback2['Review'])
             )
 
         # Function to determine sentiment category based on sentiment score
@@ -121,17 +119,17 @@ def fetch_and_load_data(request):
                 continue
 
             # Perform sentiment analysis using Natural Language API
-            document = language_v1.Document(content=review['Review'], type_=language_v1.Document.Type.PLAIN_TEXT)
+            document = language_v1.Document(content=review['message']['S'], type_=language_v1.Document.Type.PLAIN_TEXT)
             sentiment = language_client.analyze_sentiment(request={'document': document}).document_sentiment
 
             # Append formatted feedback data to list for insertion
             rows_to_insert_feedback.append({
-                'ReviewId': review['ReviewId'],
-                'Date': review['Date'],
-                'Rating': review['Rating'],
-                'RoomId': review['RoomId'],
-                'UserId': review['UserId'],
-                'Review': review['Review'],
+                'ReviewId': review['reviewId']['S'],
+                'Date': review['date']['S'],
+                'Rating': int(review['rating']['N']),
+                'RoomId': int(review['roomNumber']['N']),
+                'UserId': review['userId']['S'],
+                'Review': review['message']['S'],
                 'SentimentScore': sentiment.score,
                 'SentimentMagnitude': sentiment.magnitude,
                 'SentimentCategory': get_sentiment_category(sentiment.score)
