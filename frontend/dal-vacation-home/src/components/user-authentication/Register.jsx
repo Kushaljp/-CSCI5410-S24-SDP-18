@@ -48,7 +48,8 @@ export default function Register() {
       "lastname": firstFactorAuthData.lastname,
       "role": firstFactorAuthData.role,
       "securityQuestions": formatSecurityQA(secondFactorAuthData),
-      "cipherText": encryptCipherText(thirdFactorAuthData.cipherText, thirdFactorAuthData.shiftNumber)
+      "cipherText": encryptCipherText(thirdFactorAuthData.cipherText, thirdFactorAuthData.shiftNumber),
+      "isLoggedIn": false
     }
     const authDetails = new AuthenticationDetails({
       Username: firstFactorAuthData.email,
