@@ -5,7 +5,7 @@ import { AuthenticationDetails, CognitoUser } from 'amazon-cognito-identity-js';
 import FirstFactorAuth from './FirstFactorAuth';
 import SecondFactorAuth from './SecondFactorAuth';
 import ThirdFactorAuth from './ThirdFactorAuth';
-import { getUserData } from '../../services/AuthenticationApiService';
+import { getUserData, setIsUserLoggedIn } from '../../services/AuthenticationApiService';
 import { encryptCipherText, formatSecurityQA, setUser } from '../../util/user-authentication/AuthenticationUtil';
 import { DEFAULT_FIRST_FACTOR_AUTH, DEFAULT_SECOND_FACTOR_AUTH, DEFAULT_THIRD_FACTOR_AUTH } from '../../util/Constants';
 
@@ -66,6 +66,11 @@ function Login() {
         "lastname": userData.lastname.S,
         "role": userData.role.S
       }
+      let userLoggedInData = {
+        "email": firstFactorAuthData.email,
+        "isLoggedIn": true
+      }
+      setIsUserLoggedIn(userLoggedInData)
       setUser(user)
       alert("Successful login")
     } else {
