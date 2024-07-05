@@ -1,5 +1,5 @@
 import axios from "axios";
-import { GET_USER_URL, SAVE_USER_URL } from "../util/ApiConstants";
+import { GET_USER_URL, SAVE_USER_URL, SET_ISLOGGEDIN_URL } from "../util/ApiConstants";
 
 export const saveUserRegistration = async (userData, cognitoUser, authDetails) => {
   try {
@@ -30,4 +30,10 @@ export const getUserData = async (email, setUserData) => {
   } catch (error) {
     setUserData("");
   }
+}
+
+export const setIsUserLoggedIn = async (data) => {
+  try {
+    await axios.put(SET_ISLOGGEDIN_URL, data);
+  } catch (error) {}
 }

@@ -11,12 +11,8 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Login />} />
-        {/* <Route path="/addproperty" element={<AddProperty/>} />
-        <Route path="/roomdetails" element={<RoomDetails/>} />
-        <Route path="/listrooms" element={<ListRooms/>} />
-        <Route path="/listapprovals" element={<ListApprovals/>} />  */}
-        <Route path="/dashboard" element={<Dashboard/>} />
+        <Route path="/register" element={<Register />} />
+        <Route path="/login" element={<Login />} />
       </Routes>
     </BrowserRouter>
   );
