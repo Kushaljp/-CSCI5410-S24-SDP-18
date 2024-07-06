@@ -1,11 +1,11 @@
 import { Alert, Container, Typography } from '@mui/material'
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import UserPool from '../../util/user-authentication/UserPool';
 import { AuthenticationDetails, CognitoUser } from 'amazon-cognito-identity-js';
 import FirstFactorAuth from './FirstFactorAuth';
 import SecondFactorAuth from './SecondFactorAuth';
 import ThirdFactorAuth from './ThirdFactorAuth';
-import { getUserData, setIsUserLoggedIn } from '../../services/AuthenticationApiService';
+import { getUserData, setIsUserLoggedIn, verifyCipherText, verifySecurityQuestions } from '../../services/AuthenticationApiService';
 import { encryptCipherText, formatSecurityQA, setUser } from '../../util/user-authentication/AuthenticationUtil';
 import { DEFAULT_FIRST_FACTOR_AUTH, DEFAULT_SECOND_FACTOR_AUTH, DEFAULT_THIRD_FACTOR_AUTH } from '../../util/Constants';
 
@@ -14,10 +14,12 @@ function Login() {
   const [firstFactorAuthData, setFirstFactorAuthData] = useState(DEFAULT_FIRST_FACTOR_AUTH)
   const [secondFactorAuthData, setSecondFactorAuthData] = useState(DEFAULT_SECOND_FACTOR_AUTH)
   const [thirdFactorAuthData, setThirdFactorAuthData] = useState(DEFAULT_THIRD_FACTOR_AUTH)
-  const [userData, setUserData] = useState()
+  //const [userData, setUserData] = useState()
 
   const [showAlert, setShowAlert] = useState(false)
   const [alertMessage, setAlertMessage] = useState()
+  const [verifiedSecondFactorAuth, setVerifiedSecondFactorAuth] = useState()
+  const [verifiedThirdFactorAuth, setVerifiedThirdFactorAuth] = useState()
 
   const authenticateUser = () => {
     const user = new CognitoUser({
@@ -34,7 +36,7 @@ function Login() {
       onSuccess: (result) => {
         setShowAlert(false)
         setAuthStep(2)
-        getUserData(firstFactorAuthData.email, setUserData)
+        //getUserData(firstFactorAuthData.email, setUserData)
       },
       onFailure: (error) => {
         setAuthStep(0)
@@ -44,27 +46,23 @@ function Login() {
     })
   }
 
-  const validateSecurityQuestions = () => {
-    if (userData.securityQuestions.S === formatSecurityQA(secondFactorAuthData)) {
+  useEffect(() => {
+    if (verifiedSecondFactorAuth === "verified") {
       setShowAlert(false)
       setAuthStep(4)
-    } else {
+    } else if (verifiedSecondFactorAuth === "unverified") {
       setAuthStep(2)
       setShowAlert(true)
       setAlertMessage("Incorrect security questions and answers.")
     }
-  }
+  }, [verifiedSecondFactorAuth]);
 
-  const validateCipherText = () => {
-    console.log(userData.cipherText.S)
-    if (userData.cipherText.S === encryptCipherText(thirdFactorAuthData.cipherText, thirdFactorAuthData.shiftNumber)) {
+  useEffect(() => {
+    if (verifiedThirdFactorAuth === "verified") {
       setShowAlert(false)
       setAuthStep(0)
       let user = {
-        "email": firstFactorAuthData.email,
-        "firstname": userData.firstname.S,
-        "lastname": userData.lastname.S,
-        "role": userData.role.S
+        "email": firstFactorAuthData.email
       }
       let userLoggedInData = {
         "email": firstFactorAuthData.email,
@@ -73,11 +71,27 @@ function Login() {
       setIsUserLoggedIn(userLoggedInData)
       setUser(user)
       alert("Successful login")
-    } else {
+    } else if (verifiedThirdFactorAuth === "unverified") {
       setAuthStep(4)
       setShowAlert(true)
       setAlertMessage("Invalid cipher or shift number.")
     }
+  }, [verifiedThirdFactorAuth]);
+
+  const validateSecurityQuestions = () => {
+    let data = {
+      "data": formatSecurityQA(secondFactorAuthData),
+      "email": firstFactorAuthData.email
+    }
+    verifySecurityQuestions(data, setVerifiedSecondFactorAuth);
+  }
+
+  const validateCipherText = () => {
+    let data = {
+      "data": encryptCipherText(thirdFactorAuthData.cipherText, thirdFactorAuthData.shiftNumber),
+      "email": firstFactorAuthData.email
+    }
+    verifyCipherText(data, setVerifiedThirdFactorAuth);
   }
 
   return (
