@@ -1,5 +1,6 @@
 import functions_framework
 import json
+from flask import jsonify
 from google.cloud import pubsub_v1
 
 # Initialize Pub/Sub client
@@ -19,7 +20,7 @@ def publish_concern(request):
     request_json = request.get_json(silent=True)
     
     if not request_json:
-        return 'Invalid request: No JSON payload', 400
+        return jsonify({'error': 'Invalid request: No JSON payload'}), 400
     
     try:
         booking_reference = request_json['booking_reference']
@@ -27,7 +28,7 @@ def publish_concern(request):
         customer_email = request_json['customer_email']
         concern = request_json['concern']
     except KeyError as e:
-        return f'Missing parameter: {str(e)}', 400
+        return jsonify({'error': f'Missing parameter: {str(e)}'}), 400
 
     message_data = {
         "booking_reference": booking_reference,
@@ -40,6 +41,6 @@ def publish_concern(request):
     try:
         future = publisher.publish(topic_path, message_json)
         message_id = future.result()
-        return f'Published message ID: {message_id}', 200
+        return jsonify({'message': 'Published message successfully', 'message_id': message_id}), 200
     except Exception as e:
-        return f'Error publishing message: {str(e)}', 500
+        return jsonify({'error': f'Error publishing message: {str(e)}'}), 500
