@@ -1,4 +1,4 @@
-export const BASE_URL = "https://lqknmdcv2a.execute-api.us-east-1.amazonaws.com/prod";
+export const BASE_URL = "https://vrnylsjiye.execute-api.us-east-1.amazonaws.com/prod";
 
 export const SAVE_USER_URL = BASE_URL + "/user";
 export const GET_USER_URL = BASE_URL + "/user/";

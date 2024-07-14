@@ -18,7 +18,7 @@ public class ThirdFactorAuthLambdaRequestHandler implements RequestHandler<Map<S
 		String email = input.get("email");
 		RestTemplate restTemplate = new RestTemplate();
 		ResponseEntity<String> response = restTemplate
-				.exchange("https://lqknmdcv2a.execute-api.us-east-1.amazonaws.com/prod/user/" + email, HttpMethod.GET, null, String.class);
+				.exchange("https://vrnylsjiye.execute-api.us-east-1.amazonaws.com/prod/user/" + email, HttpMethod.GET, null, String.class);
 		JSONObject jsonObject = new JSONObject(response.getBody());
 		String userCipherText = ((JSONObject) jsonObject.getJSONArray("Items").get(0)).getJSONObject("cipherText").get("S").toString();
 		
