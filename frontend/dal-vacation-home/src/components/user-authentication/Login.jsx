@@ -5,7 +5,7 @@ import { AuthenticationDetails, CognitoUser } from 'amazon-cognito-identity-js';
 import FirstFactorAuth from './FirstFactorAuth';
 import SecondFactorAuth from './SecondFactorAuth';
 import ThirdFactorAuth from './ThirdFactorAuth';
-import { getUserData, setIsUserLoggedIn, verifyCipherText, verifySecurityQuestions } from '../../services/AuthenticationApiService';
+import { setIsUserLoggedIn, verifyCipherText, verifySecurityQuestions } from '../../services/AuthenticationApiService';
 import { encryptCipherText, formatSecurityQA, setUser } from '../../util/user-authentication/AuthenticationUtil';
 import { DEFAULT_FIRST_FACTOR_AUTH, DEFAULT_SECOND_FACTOR_AUTH, DEFAULT_THIRD_FACTOR_AUTH } from '../../util/Constants';
 
@@ -14,7 +14,7 @@ function Login() {
   const [firstFactorAuthData, setFirstFactorAuthData] = useState(DEFAULT_FIRST_FACTOR_AUTH)
   const [secondFactorAuthData, setSecondFactorAuthData] = useState(DEFAULT_SECOND_FACTOR_AUTH)
   const [thirdFactorAuthData, setThirdFactorAuthData] = useState(DEFAULT_THIRD_FACTOR_AUTH)
-  //const [userData, setUserData] = useState()
+  const [userData, setUserData] = useState()
 
   const [showAlert, setShowAlert] = useState(false)
   const [alertMessage, setAlertMessage] = useState()
@@ -36,7 +36,6 @@ function Login() {
       onSuccess: (result) => {
         setShowAlert(false)
         setAuthStep(2)
-        //getUserData(firstFactorAuthData.email, setUserData)
       },
       onFailure: (error) => {
         setAuthStep(0)
@@ -62,7 +61,10 @@ function Login() {
       setShowAlert(false)
       setAuthStep(0)
       let user = {
-        "email": firstFactorAuthData.email
+        "email": firstFactorAuthData.email,
+        "firstname": userData.firstname,
+        "lastname": userData.lastname,
+        "role": userData.role
       }
       let userLoggedInData = {
         "email": firstFactorAuthData.email,
@@ -91,7 +93,7 @@ function Login() {
       "data": encryptCipherText(thirdFactorAuthData.cipherText, thirdFactorAuthData.shiftNumber),
       "email": firstFactorAuthData.email
     }
-    verifyCipherText(data, setVerifiedThirdFactorAuth);
+    verifyCipherText(data, setVerifiedThirdFactorAuth, setUserData);
   }
 
   return (
