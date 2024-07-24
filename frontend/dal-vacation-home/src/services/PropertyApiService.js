@@ -1,4 +1,5 @@
 import axios from "axios";
+import { SAVE_FEEDBACK_URL } from "../util/ApiConstants";
 
 
 const API_BASE_URL = 'https://kiuy4j7k8h.execute-api.us-east-1.amazonaws.com/prod/property'; 
@@ -164,3 +165,16 @@ export const fetchPropertyData = async (propertyId) => {
         return null;
     }
 };
+
+
+export const saveFeedback = async (data, navigate) => {   
+    const currentDate = new Date();
+    data.date = currentDate.toLocaleDateString();
+    data.reviewId = "R" + currentDate.getTime();
+    data.rating = Number(data.rating)
+    data.roomNumber = Number(data.roomNumber)
+    try {
+        await axios.post(SAVE_FEEDBACK_URL, data);
+        navigate("/login")
+      } catch (error) {}
+}

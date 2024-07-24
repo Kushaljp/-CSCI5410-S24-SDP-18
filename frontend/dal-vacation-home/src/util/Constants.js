@@ -27,3 +27,10 @@ export const DEFAULT_THIRD_FACTOR_AUTH = {
   "cipherText": "",
   shiftNumber: 0
 }
+
+export const DEFAULT_FEEDBACK = {
+  "roomNumber": 0,
+  "message": "",
+  "userId": "",
+  rating: 0
+}

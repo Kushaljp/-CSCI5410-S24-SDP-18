@@ -7,6 +7,7 @@ import ListApprovals from './components/ListApprovals';
 import ListRooms from './components/ListRooms';
 import AgentDashboard from './components/dashboard/AgentDashboard';
 import UserDashboard from './components/dashboard/UserDashboard'
+import FeedbackForm from './components/FeedbackForm';
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
         <Route path="/roomdetails" element={<RoomDetails/>} />
         <Route path="/listrooms" element={<ListRooms/>} />
         <Route path="/listapprovals" element={<ListApprovals/>} /> 
+        <Route path="/feedback" element={<FeedbackForm/>} /> 
       </Routes>
     </BrowserRouter>
   );
