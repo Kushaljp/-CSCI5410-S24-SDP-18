@@ -5,7 +5,7 @@ steps:
 
   # Step 2: Push the Docker image to Google Container Registry
   - name: 'gcr.io/cloud-builders/docker'
-    args: ['push', 'northamerica-northeast1-docker.pkg.dev/serverlessproject-430420/serverless-sdp18']
+    args: ['push', 'northamerica-northeast1-docker.pkg.dev/serverlessproject-430420/serverless-sdp18/serverlesssdpimage']
     
   # Deploy container image to Cloud Run
   - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
@@ -15,7 +15,7 @@ steps:
       - 'deploy'
       - 'dalvacationhome-sdp18'
       - '--image'
-      - 'northamerica-northeast1-docker.pkg.dev/serverlessproject-430420/serverless-sdp18'
+      - 'northamerica-northeast1-docker.pkg.dev/serverlessproject-430420/serverless-sdp18/serverlesssdpimage'
       - '--region'
       - 'northamerica-northeast1'
       - '--platform'
