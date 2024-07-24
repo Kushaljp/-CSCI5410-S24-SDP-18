@@ -252,7 +252,6 @@ export const getPropertiesByRole = async (role) => {
   
   
 
-
 // export const fetchAllProperties = async () => {
 //     try {
 //         // const response = await fetch(`${API_BASE_URL}`, {
