@@ -996,6 +996,78 @@ Resources:
       - StatusCode: 200
         ResponseParameters:
           method.response.header.Access-Control-Allow-Origin: false
+
+  ## Booking Resource and Methods for fetching data based on userId
+  BookingResourceUserId:
+    Type: 'AWS::ApiGateway::Resource'
+    Properties:
+      ParentId: !Ref BookingResource
+      PathPart: 'userbookings'
+      RestApiId: !Ref DalVacationHomeAPIs
+
+  OptionsMethodBookingResourceUserId:
+    Type: AWS::ApiGateway::Method
+    Properties:
+      RestApiId: !Ref DalVacationHomeAPIs
+      ResourceId: !Ref BookingResourceUserId
+      HttpMethod: OPTIONS
+      AuthorizationType: NONE
+      Integration:
+        IntegrationResponses:
+        - StatusCode: 200
+          ResponseParameters:
+            method.response.header.Access-Control-Allow-Headers: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'"
+            method.response.header.Access-Control-Allow-Methods: "'GET,POST,OPTIONS'"
+            method.response.header.Access-Control-Allow-Origin: "'http://localhost:3000'"
+          ResponseTemplates:
+            application/json: ''
+        PassthroughBehavior: WHEN_NO_MATCH
+        RequestTemplates:
+          application/json: '{"statusCode": 200}'
+        Type: MOCK
+      MethodResponses:
+      - StatusCode: 200
+        ResponseModels:
+          application/json: 'Empty'
+        ResponseParameters:
+          method.response.header.Access-Control-Allow-Headers: false
+          method.response.header.Access-Control-Allow-Methods: false
+          method.response.header.Access-Control-Allow-Origin: false
+
+  GetAllBookingsMethodBasedOnUserId:
+    Type: AWS::ApiGateway::Method
+    Properties:
+      RestApiId: !Ref DalVacationHomeAPIs
+      ResourceId: !Ref BookingResourceUserId
+      HttpMethod: POST
+      AuthorizationType: NONE
+      Integration:
+        IntegrationHttpMethod: 'POST'
+        Type: AWS
+        Credentials: !Ref LabRoleARN
+        Uri:
+          Fn::Sub: arn:aws:apigateway:${AWS::Region}:dynamodb:action/Scan
+        RequestTemplates:
+          application/json: |
+            {
+              "TableName": "booking",
+              "FilterExpression": "userId = :userId",
+              "ExpressionAttributeValues": {
+                ":userId": {
+                    "S": "$input.path('$.userId')"
+                }
+              }
+            }
+        IntegrationResponses:
+        - StatusCode: 200
+          ResponseParameters:
+            method.response.header.Access-Control-Allow-Origin: "'http://localhost:3000'"
+          ResponseTemplates:
+            application/json: ''
+      MethodResponses:
+      - StatusCode: 200
+        ResponseParameters:
+          method.response.header.Access-Control-Allow-Origin: false
   
   ## Lambda functions for User Authentication
   SecondFactorAuthLambdaFunction:
