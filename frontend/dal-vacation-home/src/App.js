@@ -7,6 +7,9 @@ import ListApprovals from './components/ListApprovals';
 import ListRooms from './components/ListRooms';
 import AgentDashboard from './components/dashboard/AgentDashboard';
 import UserDashboard from './components/dashboard/UserDashboard'
+import LandingPage from './components/LandingPage';
+import AddConcerns from './components/concerns/AddConcerns';
+import SubscribeConcerns from './components/concerns/SubscribeConcerns';
 
 function App() {
   return (
@@ -17,9 +20,10 @@ function App() {
         <Route path="/agentdashboard" element={<AgentDashboard/>} />
         <Route path="/userdashboard" element={<UserDashboard/>} />
         <Route path="/addproperty" element={<AddProperty/>} />
-        <Route path="/roomdetails" element={<RoomDetails/>} />
-        <Route path="/listrooms" element={<ListRooms/>} />
-        <Route path="/listapprovals" element={<ListApprovals/>} /> 
+        <Route path="/room/:id" element={<RoomDetails />} />
+        <Route path="/landing" element={<LandingPage/>}/>
+        <Route path="/addconcerns" element={<AddConcerns/>}/>
+        <Route path="/subscribedconcerns" element={<SubscribeConcerns/>}/>
       </Routes>
     </BrowserRouter>
   );

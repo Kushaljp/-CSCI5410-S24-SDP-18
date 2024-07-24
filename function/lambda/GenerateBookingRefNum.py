@@ -13,7 +13,7 @@ def lambda_handler(event, context):
     booking_reference_id = str(uuid.uuid4())
     booking_approval_request["BookingReferenceNo"] = booking_reference_id
     print(booking_approval_request)
-    table.put_item(Item = booking_approval_request)
+    response = table.put_item(Item = booking_approval_request)
     sqs_client.send_message(QueueUrl="https://sqs.us-east-1.amazonaws.com/240859223994/BookingApprovalQueue",MessageBody = json.dumps(booking_approval_request))
     return {
             "statusCode":200,

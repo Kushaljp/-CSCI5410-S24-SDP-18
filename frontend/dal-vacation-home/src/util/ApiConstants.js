@@ -8,4 +8,4 @@ export const VERIFY_SECURITY_QA_URL = BASE_URL + "/lambda/secondfactorauth";
 export const VERIFY_CIPHER_TEXT_URL = BASE_URL + "/lambda/thirdfactorauth";
 
 export const SUBSCRIBE_USER_URL = "https://vbybabngu4.execute-api.us-east-1.amazonaws.com/prod/createsubscription/";
-export const PUBLISH_MESSAGE_URL = "https://vbybabngu4.execute-api.us-east-1.amazonaws.com/prod/publishmessage/";
+export const PUBLISH_MESSAGE_URL = "https://vbybabngu4.execute-api.us-east-1.amazonaws.com/prod/publishmessage/";   

@@ -8,6 +8,7 @@ import ThirdFactorAuth from './ThirdFactorAuth';
 import { setIsUserLoggedIn, verifyCipherText, verifySecurityQuestions } from '../../services/AuthenticationApiService';
 import { encryptCipherText, formatSecurityQA, setUser } from '../../util/user-authentication/AuthenticationUtil';
 import { DEFAULT_FIRST_FACTOR_AUTH, DEFAULT_SECOND_FACTOR_AUTH, DEFAULT_THIRD_FACTOR_AUTH } from '../../util/Constants';
+import {useNavigate} from 'react-router-dom';
 
 function Login() {
   const [authStep, setAuthStep] = useState(0);
@@ -20,6 +21,7 @@ function Login() {
   const [alertMessage, setAlertMessage] = useState()
   const [verifiedSecondFactorAuth, setVerifiedSecondFactorAuth] = useState()
   const [verifiedThirdFactorAuth, setVerifiedThirdFactorAuth] = useState()
+  const navigate = useNavigate();
 
   const authenticateUser = () => {
     const user = new CognitoUser({
@@ -73,6 +75,8 @@ function Login() {
       setIsUserLoggedIn(userLoggedInData)
       setUser(user)
       alert("Successful login")
+      navigate('/landing')
+
     } else if (verifiedThirdFactorAuth === "unverified") {
       setAuthStep(4)
       setShowAlert(true)

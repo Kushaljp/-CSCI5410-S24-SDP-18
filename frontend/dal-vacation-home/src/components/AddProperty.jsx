@@ -2,6 +2,7 @@ import { TextField, Typography,InputLabel,Select,MenuItem,Box,Button,OutlinedInp
 import React, { useEffect } from 'react'
 import { useState } from 'react';
 import { getUser, setUser } from '../util/user-authentication/AuthenticationUtil';
+import Header from './Header';
 
 
 const AddProperty = () => {
@@ -70,12 +71,13 @@ const AddProperty = () => {
 
   return (
     <>
+    <Header/>
     {message && (
             <Typography variant="h6" color="success" style={{ marginBottom: '20px' }}>
               {message}
             </Typography>
           )}
-    <Box sx={{width:'400px',margin: 'auto' }}>
+    <Box sx={{width:'400px',margin: 'auto', marginTop:3 }}>
     <Typography variant='h5'>Add Property</Typography>
     <TextField label="Enter Features" fullWidth  margin="normal" name="features" value={data.features} onChange={handleChange}/>
     <TextField label="Enter Occupancy" fullWidth margin='normal' name="occupancy" value={data.occupancy} onChange={handleChange}/>
@@ -117,10 +119,7 @@ const AddProperty = () => {
     <Button onClick ={() => addproperty()} variant="contained" color="primary" >
     Add Property</Button>
     </Box>
-    
-    
     </Box>
-    
     </>
   )
 }
