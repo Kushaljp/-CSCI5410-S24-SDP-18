@@ -1,24 +1,83 @@
-import React from 'react';
-import { Card, CardContent, Typography, Button, Box } from '@mui/material';
+import React, { useState } from 'react';
+import { Card, CardContent, Typography, Button, TextField, Box } from '@mui/material';
+import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import dayjs from 'dayjs';
 
-const PropertyCard = ({property}) => {
+const PropertyCard = ({ user, property, onApprove, onBook }) => {
+  const [fromDate, setFromDate] = useState(dayjs().hour(12).minute(0));
+  const [toDate, setToDate] = useState(dayjs().hour(12).minute(0));
 
-    const cleanString = (str) => {
-        console.log('String:',str.replace(/[\[\]\']+/g,"").trim(),typeof(str));
-        return str.replace(/[\[\]\']+/g,'').trim();
+  const handleFromDateChange = (newValue) => {
+    setFromDate(newValue.hour(12).minute(0));
+    if (newValue.isAfter(toDate)) {
+      setToDate(newValue.hour(12).minute(0));
     }
+  };
 
-    console.log("Property Card page data:",property);
-    return (
-        <Card sx={{ marginBottom: 2 }}>
-            <CardContent>
-                <Typography variant="h6">Room {property.roomNumber}</Typography>
-                <Typography variant="body2">Features: {cleanString(property.features)}</Typography>
-                <Typography variant="body2">Occupancy: {property.occupancy}</Typography>
-                <Typography variant="body2">Room Type: {property.roomType}</Typography>
-            </CardContent>
-        </Card>
-    );
+  const handleToDateChange = (newValue) => {
+    if (newValue.isAfter(fromDate)) {
+      setToDate(newValue.hour(12).minute(0));
+    }
+  };
+
+  return (
+    <Card sx={{ marginBottom: 2 }}>
+      <CardContent>
+        <Typography variant="h5" component="div">
+          Room Number: {property.roomNumber}
+        </Typography>
+        {user.role === 'student' ? (
+          <>
+            <Typography variant="body2" color="text.secondary">
+              {property.roomType} - Occupancy: {property.occupancy}
+            </Typography>
+            <Typography variant="body2" color="text.secondary">
+              Features: {property.features}
+            </Typography>
+            <LocalizationProvider dateAdapter={AdapterDayjs}>
+              <DatePicker
+                label="From Date"
+                value={fromDate}
+                onChange={handleFromDateChange}
+                renderInput={(props) => <TextField {...props} />}
+              />
+              <DatePicker
+                label="To Date"
+                value={toDate}
+                onChange={handleToDateChange}
+                renderInput={(props) => <TextField {...props} />}
+              />
+            </LocalizationProvider>
+            <Button variant="contained" color="primary" onClick={() => onBook(property, user.email, fromDate, toDate)}>
+              Book
+            </Button>
+          </>
+        ) : user.role === 'agent' ? (
+          <>
+            <Typography variant="body2" color="text.secondary">
+              Booking Reference No: {property.bookingReferenceNumber}
+            </Typography>
+            <Typography variant="body2" color="text.secondary">
+              User Email: {property.userEmail}
+            </Typography>
+            <Typography variant="body2" color="text.secondary">
+              Customer Name: {property.userName}
+            </Typography>
+            <Typography variant="body2" color="text.secondary">
+              From Date: {property.fromDate}
+            </Typography>
+            <Typography variant="body2" color="text.secondary">
+              To Date: {property.toDate}
+            </Typography>
+            <Button variant="contained" color="primary" onClick={() => onApprove(property.bookingReferenceNumber)}>
+              Approve
+            </Button>
+          </>
+        ) : null}
+      </CardContent>
+    </Card>
+  );
 };
 
 export default PropertyCard;
