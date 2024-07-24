@@ -1,7 +1,7 @@
 steps:
   # Step 1: Build the Docker image
   - name: 'gcr.io/cloud-builders/docker'
-    args: ['build', '-t', 'northamerica-northeast1-docker.pkg.dev/serverlessproject-430420/serverless-sdp18', '.']
+    args: ['build', '-t', 'northamerica-northeast1-docker.pkg.dev/serverlessproject-430420/serverless-sdp18', '/frontend/dal-vacation-home']
 
   # Step 2: Push the Docker image to Google Container Registry
   - name: 'gcr.io/cloud-builders/docker'
