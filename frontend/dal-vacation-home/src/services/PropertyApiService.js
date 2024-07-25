@@ -1,6 +1,7 @@
 import axios from "axios";
 import { getUser } from "../util/user-authentication/AuthenticationUtil";
 import { SAVE_FEEDBACK_URL } from "../util/ApiConstants";
+import dayjs from "dayjs";
 
 
 
@@ -246,9 +247,8 @@ export const fetchPropertyData = async (propertyId) => {
 };
 
 export const saveFeedback = async (data, navigate) => {   
-    const currentDate = new Date();
-    data.date = currentDate.toLocaleDateString();
-    data.reviewId = "R" + currentDate.getTime();
+    data.date = dayjs().format('YYYY-MM-DD');
+    data.reviewId = "R" + new Date().getTime();
     data.rating = Number(data.rating)
     data.roomNumber = Number(data.roomNumber)
     try {
