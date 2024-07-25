@@ -7,12 +7,13 @@ def lambda_handler(event,context):
         dynamodb = boto3.resource('dynamodb',region_name='us-east-1')
         property_table = dynamodb.Table('Property')
         booking_table = dynamodb.Table('Booking')
+        print(event)
         for record in event['Records']:
             rec = json.loads(record['body']) 
             print(rec,record)
             property_id = rec['PropertyId']
-            booking_reference_number = rec['BookingReferenceNo']
-            response = property_table.get_item(Key={'PropertyId': property_id})
+            booking_reference_number = rec['bookingReferenceNumber']
+            response = property_table.get_item(Key={'propertyId': property_id})
             property_data = response['Item']
             agent_pool_str = property_data.get('AgentPool', '')
             agent_pool = agent_pool_str.split(',') if agent_pool_str else []

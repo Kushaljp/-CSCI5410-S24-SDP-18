@@ -1,120 +1,173 @@
-// src/components/EditProperty.jsx
-
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Grid, Typography, CircularProgress, Card, CardContent, TextField, Button, Box } from '@mui/material';
+import { Grid, Card, CardContent, Typography, TextField, Button, Box } from '@mui/material';
 import Header from './Header';
+import { getUser } from '../util/user-authentication/AuthenticationUtil';
 
-const EditProperty = () => {
-  const [editingProperties, setEditingProperties] = useState([]);
-  const [editedProperties, setEditedProperties] = useState({});
-  const [error, setError] = useState("");
-  const [loading, setLoading] = useState(true);
-  const [noEditPropertiesMessage, setNoEditPropertiesMessage] = useState('');
+const EditProperty = () => {    
+    const [properties, setProperties] = useState([]);
+    const [editingProperty, setEditingProperty] = useState(null);
+    const [user,setUser ] = useState(null);
+    useEffect(() => {
+        const fetchProperties = async () => {
+            try {
+                const userData = getUser();
+                console.log("Edit Property user data:",userData);
+                // const userData = {"email": "abcd@example.com",
+                //     "firstname": "ABCD",
+                //     "lastname": "EFGH",
+                //     "role": "agent"};
+                setUser(userData);
+                const response = await axios.get(`https://vrnylsjiye.execute-api.us-east-1.amazonaws.com/prod/property`); 
+                console.log("Properties data fetched in edit properties:",response);
+                if( response.data.Items && response.data.Items.length > 0){
+                    const transformedProperties = response.data.Items.map(item => ({
+                        propertyId: item.propertyId.S || '',
+                        roomType: item.roomType.S || '',
+                        roomNumber: item.roomNumber.N || -1,
+                        occupancy: item.occupancy.N || -1,
+                        ownerId: item.ownerId.S || '',
+                        agentPool: item.agentPool.S || '',
+                        features: cleanString(item.features.S) || ''
+                    }));
+                    //setProperties(transformedProperties);
+                }
+                else {
+                    setProperties([]);
+                }
+            } catch (error) {
+                console.error('Error fetching properties:', error);
+            }
+        };
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.get('https://example.com/api/editProperties');
-        if (response.data.length === 0) {
-          setNoEditPropertiesMessage('No properties available for editing.');
+        fetchProperties();
+    }, []);
+
+    const handleEditClick = (property) => {
+        setEditingProperty(property);
+    };
+    const cleanString = (str) => {
+        if(str!== null && str!== undefined) {
+        console.log('String:',str.replace(/[\[\]\']+/g,"").trim(),typeof(str));
+        return str.replace(/[\[\]\']+/g,'').trim();
         }
-        setEditingProperties(response.data);
-      } catch (err) {
-        setError(err);
-      } finally {
-        setLoading(false);
-      }
+        
+    }
+    const handleSave = async () => {
+        try {
+            const response = await axios.post('https://vrnylsjiye.execute-api.us-east-1.amazonaws.com/prod/property', editingProperty, {
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+            if (response.status === 200) {
+                setProperties(prevProperties =>
+                    prevProperties.map(prop =>
+                        prop.propertyId === editingProperty.propertyId ? editingProperty : prop
+                    )
+                );
+                setEditingProperty(null);
+            }
+        } catch (error) {
+            console.error('Error saving property:', error);
+        }
     };
 
-    fetchData();
-  }, []);
+    const handleCancel = () => {
+        setEditingProperty(null);
+    };
 
-  const handleChange = (propertyId, field, value) => {
-    setEditedProperties(prev => ({
-      ...prev,
-      [propertyId]: {
-        ...prev[propertyId],
-        [field]: value
-      }
-    }));
-  };
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setEditingProperty(prevProperty => ({
+            ...prevProperty,
+            [name]: value
+        }));
+    };
 
-  const handleSave = async (propertyId) => {
-    try {
-      const updatedProperty = editedProperties[propertyId];
-      await axios.put(`https://example.com/api/editProperties/${propertyId}`, updatedProperty);
-      setEditingProperties(prev =>
-        prev.map(prop =>
-          prop.propertyId === propertyId ? { ...prop, ...updatedProperty } : prop
-        )
-      );
-      alert('Property updated successfully.');
-    } catch (err) {
-      console.error('Error saving property:', err);
-      alert('Error saving property.');
-    }
-  };
+    return (
+        <>
+            <Header user={user}/>
+            <Box mt={3}>
+                <Grid container spacing={3}>
+                    {properties.map((property) => (
+                        <Grid item xs={12} sm={6} md={4} key={property.propertyId}>
+                            <Card>
+                                <CardContent>
+                                    <Typography variant="h6">{property.roomType}</Typography>
+                                    <Typography>Room Number: {property.roomNumber}</Typography>
+                                    <Typography>Occupancy: {property.occupancy}</Typography>
+                                    <Typography>Owner: {property.ownerId}</Typography>
+                                    <Typography>Features: {cleanString(property.features)}</Typography>
+                                    <Button onClick={() => handleEditClick(property)} variant="contained" color="primary" style={{ marginTop: '10px' }}>
+                                        Edit
+                                    </Button>
+                                </CardContent>
+                            </Card>
+                        </Grid>
+                    ))}
+                </Grid>
+            </Box>
 
-  if (loading) {
-    return <CircularProgress />;
-  }
-
-  if (error) {
-    return <Typography color="error">Error: {error.message}</Typography>;
-  }
-
-  return (
-    <>
-      <Header />
-      <Box mt={3}>
-        <Typography variant="h4" gutterBottom style={{ marginLeft: '30px' }}>
-          Edit Properties
-        </Typography>
-        <Grid container spacing={3}>
-          {editingProperties.length > 0 ? (
-            editingProperties.map((property) => (
-              <Grid item xs={12} sm={6} md={4} key={property.propertyId}>
-                <Card variant="outlined">
-                  <CardContent>
-                    <Typography variant="h6">Property ID: {property.propertyId}</Typography>
-                    <TextField
-                      label="Location"
-                      value={editedProperties[property.propertyId]?.location || property.location}
-                      onChange={(e) => handleChange(property.propertyId, 'location', e.target.value)}
-                      fullWidth
-                      margin="normal"
-                    />
-                    <TextField
-                      label="Price"
-                      value={editedProperties[property.propertyId]?.price || property.price}
-                      onChange={(e) => handleChange(property.propertyId, 'price', e.target.value)}
-                      fullWidth
-                      margin="normal"
-                    />
-                    {/* Add more fields as needed */}
-                    <Box mt={2}>
-                      <Button
-                        variant="contained"
-                        color="primary"
-                        onClick={() => handleSave(property.propertyId)}
-                      >
-                        Save
-                      </Button>
-                    </Box>
-                  </CardContent>
-                </Card>
-              </Grid>
-            ))
-          ) : (
-            <Typography variant="h6" gutterBottom style={{ marginTop: '20px', marginLeft: '30px' }}>
-              {noEditPropertiesMessage}
-            </Typography>
-          )}
-        </Grid>
-      </Box>
-    </>
-  );
+            {editingProperty && (
+                <Box mt={3}>
+                    <Card>
+                        <CardContent>
+                            <Typography variant="h6">Edit Property</Typography>
+                            <TextField
+                                label="Room Type"
+                                name="roomType"
+                                value={editingProperty.roomType}
+                                onChange={handleChange}
+                                fullWidth
+                                margin="normal"
+                            />
+                            <TextField
+                                label="Room Number"
+                                name="roomNumber"
+                                value={editingProperty.roomNumber}
+                                onChange={handleChange}
+                                fullWidth
+                                margin="normal"
+                            />
+                            <TextField
+                                label="Occupancy"
+                                name="occupancy"
+                                value={editingProperty.occupancy}
+                                onChange={handleChange}
+                                fullWidth
+                                margin="normal"
+                            />
+                            <TextField
+                                label="Owner ID"
+                                name="ownerId"
+                                value={editingProperty.ownerId}
+                                onChange={handleChange}
+                                fullWidth
+                                margin="normal"
+                            />
+                            <TextField
+                                label="Features"
+                                name="features"
+                                value={editingProperty.features}
+                                onChange={handleChange}
+                                fullWidth
+                                margin="normal"
+                            />
+                            <Box mt={2}>
+                                <Button onClick={handleSave} variant="contained" color="primary">
+                                    Save
+                                </Button>
+                                <Button onClick={handleCancel} variant="contained" color="secondary" style={{ marginLeft: '10px' }}>
+                                    Cancel
+                                </Button>
+                            </Box>
+                        </CardContent>
+                    </Card>
+                </Box>
+            )}
+        </>
+    );
 };
 
 export default EditProperty;

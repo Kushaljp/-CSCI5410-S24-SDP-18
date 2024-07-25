@@ -21,12 +21,14 @@ const LandingPage = () => {
           try {
             let response;
             console.log("Started fetchData in Landing page jsx...")
-            //setUserData(getUser());
-            const data = {"email": "abcd@example.com",
-              "firstname": "ABCD",
-              "lastname": "EFGH",
-              "role": "student"} ;
+            const data = getUser();
             setUserData(data);
+            console.log("Landing Page user data:",data)
+            // const data = {"email": "abcd@example.com",
+            //   "firstname": "ABCD",
+            //   "lastname": "EFGH",
+            //   "role": "student"} ;
+            // setUserData(data);
             console.log("Role:",data.role)
             let role = data.role;
             setRole(role)
@@ -123,7 +125,7 @@ const LandingPage = () => {
     return (
         <>
         <Header user={userData}/>
-        {bookingRefNumber && userData.role==='student' && (
+        {bookingRefNumber && userData.role==='guest' && (
         <Typography variant="h6" gutterBottom style={{ marginTop: '20px', marginLeft: '30px' }}>
           We have received your Booking request. You will get an email once your booking is approved by an agent.
           Booking Reference Number: {bookingRefNumber}. Please keep this booking reference number with you and you can

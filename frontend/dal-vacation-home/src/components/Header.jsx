@@ -10,11 +10,12 @@ import { UserContextProvider } from '../App';
 const Header = (user) => {
   const { isLoggedIn, setIsLoggedIn } = useContext(UserContextProvider);
   const navigate = useNavigate();
-  //const user = getUser();
-   user = {"email": "abcd@example.com",
-    "firstname": "ABCD",
-    "lastname": "EFGH",
-    "role": "student"};
+  console.log("Header user data:",user)
+  const user = getUser();
+  //  user = {"email": "abcd@example.com",
+  //   "firstname": "ABCD",
+  //   "lastname": "EFGH",
+  //   "role": "agent"};
   const handleLogout = () => {
     sessionStorage.removeItem("user");
     setIsLoggedIn(false)
@@ -29,7 +30,7 @@ const Header = (user) => {
         <Button color="inherit" component={Link} to="/landing">
             Home
           </Button>
-          {user.role === 'agent' ? (
+          {user?.role === 'agent' ? (
             <>
               <Button color="inherit" component={Link} to="/agentdashboard">
                 Agent Dashboard

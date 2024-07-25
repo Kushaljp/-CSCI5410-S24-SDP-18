@@ -76,6 +76,12 @@ function Login() {
       }
       setIsUserLoggedIn(userLoggedInData)
       setUser(user)
+      const response = axios.get('https://us-central1-csci-5408-data-management.cloudfunctions.net/loadBigQuery');
+      console.log("Big Query data updated API Response:",response);
+      if(response.status === 200){
+        console.log("Data updated to BigQuery successfully.")
+      }
+      alert("Successful login")
       setIsLoggedIn(true)
       navigate('/landing')
       window.location.reload();
