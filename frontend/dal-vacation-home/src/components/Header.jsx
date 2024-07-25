@@ -7,11 +7,11 @@ import {UserDashboard} from '../components/dashboard/UserDashboard';
 import { UserContextProvider } from '../App';
 
 
-const Header = (user) => {
+const Header = ({user}) => {
   const { isLoggedIn, setIsLoggedIn } = useContext(UserContextProvider);
   const navigate = useNavigate();
   console.log("Header user data:",user)
-  const user = getUser();
+  //const user = getUser();
   //  user = {"email": "abcd@example.com",
   //   "firstname": "ABCD",
   //   "lastname": "EFGH",
