@@ -27,7 +27,7 @@ const PropertyCard = ({ user, property, onApprove, onBook }) => {
         <Typography variant="h5" component="div">
           Room Number: {property.roomNumber}
         </Typography>
-        {user.role === 'student' ? (
+        {user.role === 'guest' ? (
           <>
             <Typography variant="body2" color="text.secondary">
               {property.roomType} - Occupancy: {property.occupancy}

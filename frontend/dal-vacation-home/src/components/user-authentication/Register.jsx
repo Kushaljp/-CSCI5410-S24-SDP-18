@@ -9,6 +9,7 @@ import UserPool from '../../util/user-authentication/UserPool';
 import { encryptCipherText, formatSecurityQA } from '../../util/user-authentication/AuthenticationUtil';
 import { getUserData, saveUserRegistration } from '../../services/AuthenticationApiService';
 import { DEFAULT_FIRST_FACTOR_AUTH, DEFAULT_SECOND_FACTOR_AUTH, DEFAULT_THIRD_FACTOR_AUTH } from '../../util/Constants';
+import {useNavigate} from 'react-router-dom';
 
 export default function Register() {
   const [authStep, setAuthStep] = useState(0);
@@ -19,6 +20,7 @@ export default function Register() {
 
   const [showAlert, setShowAlert] = useState(false)
   const [alertMessage, setAlertMessage] = useState()
+  const navigate = useNavigate();
 
   const saveUserToCognito = () => {
     const attributeList = [];
@@ -56,7 +58,13 @@ export default function Register() {
       Password: firstFactorAuthData.password,
     });
     if(saveUserRegistration(userData, cognitoUser, authDetails)) {
+      const response = axios.get('https://us-central1-csci-5408-data-management.cloudfunctions.net/loadBigQuery');
+      console.log("Big Query data updated API Response:",response);
+      if(response.status === 200){
+        console.log("Data updated to BigQuery successfully.")
+      }
       alert("User registered")
+      navigate('/login')
     } else {
       setShowAlert(true)
       setAlertMessage("Registration failed. Please try again!")

@@ -10,6 +10,9 @@ import UserDashboard from './components/dashboard/UserDashboard'
 import LandingPage from './components/LandingPage';
 import AddConcerns from './components/concerns/AddConcerns';
 import SubscribeConcerns from './components/concerns/SubscribeConcerns';
+import EditProperty from './components/EditProperty';
+import Home from './components/Home';
+
 
 function App() {
   return (
@@ -22,8 +25,10 @@ function App() {
         <Route path="/addproperty" element={<AddProperty/>} />
         <Route path="/room/:id" element={<RoomDetails />} />
         <Route path="/landing" element={<LandingPage/>}/>
+        <Route path="/" element={<Home/>}/>
         <Route path="/addconcerns" element={<AddConcerns/>}/>
         <Route path="/subscribedconcerns" element={<SubscribeConcerns/>}/>
+        <Route path='/editproperty' element={<EditProperty/>}/>
       </Routes>
     </BrowserRouter>
   );
