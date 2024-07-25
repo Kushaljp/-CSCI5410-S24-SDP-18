@@ -13,6 +13,7 @@ import SubscribeConcerns from './components/concerns/SubscribeConcerns';
 import Chatbot from './components/Chatbot';
 import { createContext, useState } from 'react';
 import { isUserLoggedIn } from './util/user-authentication/AuthenticationUtil';
+import FeedbackForm from './components/FeedbackForm';
 
 export const UserContextProvider = createContext();
 
@@ -32,6 +33,7 @@ function App() {
           <Route path="/room/:id" element={<RoomDetails />} />
           <Route path="/landing" element={<LandingPage />} />
           <Route path="/addconcerns" element={<AddConcerns />} />
+          <Route path="/feedback" element={<FeedbackForm />} />
           <Route path="/subscribedconcerns" element={<SubscribeConcerns />} />
         </Routes>
         <Chatbot />
