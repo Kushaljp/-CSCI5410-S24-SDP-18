@@ -14,16 +14,16 @@ const SubscribeConcerns = () => {
     useEffect(() => {
         const fetchConcerns = async () => {
             try {
-                const response = {
-                    "booking_reference": "c53bc608-122a-466a-bdb2-6a953863668f",
-                    "customer_name": "Jane",
-                    "customer_email": "jane.doe@example.com",
-                    "concern": "When will my booking get approved?",
-                    "assigned_agent": "john.doe@example.com"
-                };
-                setConcern(response);
-                // const response = await axios.get('https://us-central1-csci-5408-data-management.cloudfunctions.net/subscribeConcern');
-                // setConcern(response.data);
+                // const response = {
+                //     "booking_reference": "c53bc608-122a-466a-bdb2-6a953863668f",
+                //     "customer_name": "Jane",
+                //     "customer_email": "jane.doe@example.com",
+                //     "concern": "When will my booking get approved?",
+                //     "assigned_agent": "john.doe@example.com"
+                // };
+                // setConcern(response);
+                const response = await axios.get('https://us-central1-csci-5408-data-management.cloudfunctions.net/subscribeConcern');
+                setConcern(response.data);
                 console.log(response);
             } catch (error) {
                 console.error("Error while getting the concern:", error);
@@ -47,7 +47,14 @@ const SubscribeConcerns = () => {
           "assigned_agent" : concern.assigned_agent
       });
       console.log("Initialize Chat response:",initializeChatResponse)
-      setChatInitialized(true);
+      if(initializeChatResponse.message == "No messages available"){
+        setError("No messages available");
+      }
+      else{
+        setError("")
+        setChatInitialized(true);
+      }
+      
     }
     catch(error){
       console.log("Error while initializing the chat:",error);

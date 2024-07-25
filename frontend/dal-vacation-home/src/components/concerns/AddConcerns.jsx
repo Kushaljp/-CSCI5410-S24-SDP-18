@@ -4,6 +4,7 @@ import axios from 'axios';
 import { getBookingByUser } from '../../services/BookingApiService';
 import Header from '../Header';
 import { useNavigate } from 'react-router-dom';
+import { getUser } from '../../util/user-authentication/AuthenticationUtil';
 
 
 const AddConcerns = () => {
@@ -15,17 +16,28 @@ const AddConcerns = () => {
   const [error, setError] = useState(null);
   const [successMessage, setSuccessMessage] = useState('');
   const [userData, setUserData] = useState(null);
+  const [filteredConcerns, setFilteredConcerns] = useState([]);
+
+
 
   useEffect(() => {
+    const data = getUser();
+    setUserData(data);
+  }, []);
+
+  useEffect(() => {
+    if(userData){
     const fetchBookingRefNumbers = async () => {
       try {
-        //setUserData(getUser());
-        const data = {"email": "abcd@example.com",
-            "firstname": "ABCD",
-            "lastname": "EFGH",
-            "role": "student"} ;
-          setUserData(data);
+        // const data = {"email": "abcd@example.com",
+        //     "firstname": "ABCD",
+        //     "lastname": "EFGH",
+        //     "role": "student"} ;
+          // setUserData(data);
+        console.log("user data:",userData);
         const response = await getBookingByUser(userData); 
+        console.log("All Booking data:",response)
+
         setBookingRefNumbers(response);
       } catch (err) {
         setError(err);
@@ -33,9 +45,9 @@ const AddConcerns = () => {
         setLoading(false);
       }
     };
-
     fetchBookingRefNumbers();
-  }, []);
+  }
+  }, [userData]);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -55,9 +67,9 @@ const AddConcerns = () => {
         "concern": concern
     });
       console.log("Concern published successfully");
-      
-      // Check the response of the GCF called and redirect to subscribeConcern page.
-      navigate('/subscribedconcerns')
+      if(response.status === 200){
+        navigate('/subscribedconcerns');
+      }      
     } catch (err) {
       setError(err);
     } finally {
@@ -75,7 +87,7 @@ const AddConcerns = () => {
 
   return (
     <>
-    <Header/>
+    <Header user={userData}/>
     <Box mt={3}>
     <form onSubmit={handleSubmit}>
       <Grid container spacing={3}>

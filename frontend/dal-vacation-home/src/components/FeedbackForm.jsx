@@ -3,11 +3,13 @@ import { saveFeedback } from '../services/PropertyApiService';
 import { Button, Container, Grid, TextField, Typography } from '@mui/material';
 import { DEFAULT_FEEDBACK } from '../util/Constants';
 import { useNavigate } from 'react-router-dom';
+import Header from './Header';
+import { getUser } from '../util/user-authentication/AuthenticationUtil';
 
 function FeedbackForm() {
   const [feedback, setFeedback] = useState(DEFAULT_FEEDBACK)
   let navigate = useNavigate();
-
+  const user = getUser();
   const isValidData = () => {
     if (feedback.roomNumber === "" || feedback.roomNumber < 0 || feedback.roomNumber > 5000 || feedback.message === "" 
       || feedback.rating < 0 || feedback.rating > 5 || feedback.userId === "" || feedback.rating === "") {
@@ -18,6 +20,9 @@ function FeedbackForm() {
   }
 
   return (
+
+    <>
+    <Header user={user}/>
     <Container maxWidth="xs">
       <Typography variant="h6" sx={{ display: 'flex', justifyContent: 'center', paddingBottom: '5vh', fontWeight: 'bold' }}>Feedback</Typography>
       <Grid container rowGap={3} columnSpacing={2}>
@@ -65,6 +70,7 @@ function FeedbackForm() {
         </Grid>
       </Grid>
     </Container>
+    </>
   )
 }
 

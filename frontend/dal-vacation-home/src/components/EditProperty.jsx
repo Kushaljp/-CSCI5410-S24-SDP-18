@@ -20,17 +20,19 @@ const EditProperty = () => {
                 setUser(userData);
                 const response = await axios.get(`https://vrnylsjiye.execute-api.us-east-1.amazonaws.com/prod/property`); 
                 console.log("Properties data fetched in edit properties:",response);
-                if( response.data.Items && response.data.Items.length > 0){
+                if( response.data.Items.length > 0){
                     const transformedProperties = response.data.Items.map(item => ({
-                        propertyId: item.propertyId.S || '',
-                        roomType: item.roomType.S || '',
-                        roomNumber: item.roomNumber.N || -1,
-                        occupancy: item.occupancy.N || -1,
-                        ownerId: item.ownerId.S || '',
-                        agentPool: item.agentPool.S || '',
-                        features: cleanString(item.features.S) || ''
+                        propertyId: item.propertyId?.S || '',
+                        roomType: item.roomType?.S || '',
+                        roomNumber: item.roomNumber?.N || -1,
+                        occupancy: item.occupancy?.N || -1,
+                        ownerId: item.ownerId?.S || '',
+                        agentPool: item.agentPool?.S || '',
+                        features: cleanString(item.features?.S) || '',
+                        price: item.price?.N || -1 
                     }));
-                    //setProperties(transformedProperties);
+                    const filteredProperties = transformedProperties.filter(property => property.ownerId === userData.email);
+                    setProperties(filteredProperties);
                 }
                 else {
                     setProperties([]);
@@ -95,9 +97,11 @@ const EditProperty = () => {
                             <Card>
                                 <CardContent>
                                     <Typography variant="h6">{property.roomType}</Typography>
+                                    <Typography>Agent Pool: {property.agentPool}</Typography>
                                     <Typography>Room Number: {property.roomNumber}</Typography>
                                     <Typography>Occupancy: {property.occupancy}</Typography>
                                     <Typography>Owner: {property.ownerId}</Typography>
+                                    <Typography>Price: {property.price}</Typography>
                                     <Typography>Features: {cleanString(property.features)}</Typography>
                                     <Button onClick={() => handleEditClick(property)} variant="contained" color="primary" style={{ marginTop: '10px' }}>
                                         Edit
@@ -123,6 +127,14 @@ const EditProperty = () => {
                                 margin="normal"
                             />
                             <TextField
+                                label="Agent Pool"
+                                name="agentPool"
+                                value={editingProperty.agentPool}
+                                onChange={handleChange}
+                                fullWidth
+                                margin="normal"
+                            />
+                            <TextField
                                 label="Room Number"
                                 name="roomNumber"
                                 value={editingProperty.roomNumber}
@@ -142,6 +154,14 @@ const EditProperty = () => {
                                 label="Owner ID"
                                 name="ownerId"
                                 value={editingProperty.ownerId}
+                                onChange={handleChange}
+                                fullWidth
+                                margin="normal"
+                            />
+                            <TextField
+                                label="Price"
+                                name="price"
+                                value={editingProperty.price}
                                 onChange={handleChange}
                                 fullWidth
                                 margin="normal"
