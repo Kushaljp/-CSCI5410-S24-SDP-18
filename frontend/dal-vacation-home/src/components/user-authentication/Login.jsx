@@ -1,5 +1,5 @@
 import { Alert, Container, Typography } from '@mui/material'
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import UserPool from '../../util/user-authentication/UserPool';
 import { AuthenticationDetails, CognitoUser } from 'amazon-cognito-identity-js';
 import FirstFactorAuth from './FirstFactorAuth';
@@ -9,8 +9,10 @@ import { setIsUserLoggedIn, verifyCipherText, verifySecurityQuestions } from '..
 import { encryptCipherText, formatSecurityQA, setUser } from '../../util/user-authentication/AuthenticationUtil';
 import { DEFAULT_FIRST_FACTOR_AUTH, DEFAULT_SECOND_FACTOR_AUTH, DEFAULT_THIRD_FACTOR_AUTH } from '../../util/Constants';
 import {useNavigate} from 'react-router-dom';
+import { UserContextProvider } from '../../App';
 
 function Login() {
+  const { isLoggedIn, setIsLoggedIn } = useContext(UserContextProvider);
   const [authStep, setAuthStep] = useState(0);
   const [firstFactorAuthData, setFirstFactorAuthData] = useState(DEFAULT_FIRST_FACTOR_AUTH)
   const [secondFactorAuthData, setSecondFactorAuthData] = useState(DEFAULT_SECOND_FACTOR_AUTH)
@@ -74,9 +76,9 @@ function Login() {
       }
       setIsUserLoggedIn(userLoggedInData)
       setUser(user)
-      alert("Successful login")
+      setIsLoggedIn(true)
       navigate('/landing')
-
+      window.location.reload();
     } else if (verifiedThirdFactorAuth === "unverified") {
       setAuthStep(4)
       setShowAlert(true)
