@@ -6,7 +6,7 @@ import Header from '../Header';
 import { useNavigate } from 'react-router-dom';
 import { getUser } from '../../util/user-authentication/AuthenticationUtil';
 
-
+//Customers can add concerns through this page. Customers will only see their booking reference numbers listed and can raise a concern for that.
 const AddConcerns = () => {
   const navigate = useNavigate();
   const [bookingRefNumbers, setBookingRefNumbers] = useState([]);
@@ -29,11 +29,6 @@ const AddConcerns = () => {
     if(userData){
     const fetchBookingRefNumbers = async () => {
       try {
-        // const data = {"email": "abcd@example.com",
-        //     "firstname": "ABCD",
-        //     "lastname": "EFGH",
-        //     "role": "student"} ;
-          // setUserData(data);
         console.log("user data:",userData);
         const response = await getBookingByUser(userData); 
         console.log("All Booking data:",response)

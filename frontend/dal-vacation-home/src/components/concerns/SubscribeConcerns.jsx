@@ -3,25 +3,17 @@ import { Grid, CircularProgress, Typography, Card, CardContent, Button } from '@
 import Header from '../Header';
 import axios from 'axios';
 import AddMessages from './AddMessages';
-
+// This page is for subscribe concerns. After user has raised concern, they are given an option for a live chat.
 const SubscribeConcerns = () => {
     const [concern, setConcern] = useState({});
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [chatInitialized, setChatInitialized] = useState(false);
 
-
+    // Fetching raised concern by the user.
     useEffect(() => {
         const fetchConcerns = async () => {
             try {
-                // const response = {
-                //     "booking_reference": "c53bc608-122a-466a-bdb2-6a953863668f",
-                //     "customer_name": "Jane",
-                //     "customer_email": "jane.doe@example.com",
-                //     "concern": "When will my booking get approved?",
-                //     "assigned_agent": "john.doe@example.com"
-                // };
-                // setConcern(response);
                 const response = await axios.get('https://us-central1-csci-5408-data-management.cloudfunctions.net/subscribeConcern');
                 setConcern(response.data);
                 console.log(response);
@@ -35,7 +27,7 @@ const SubscribeConcerns = () => {
 
         fetchConcerns();
     }, []);
-
+    // Initializing live chat if user requests it.
     const handleLiveChat = async (concern) => {
         try{
         console.log('Initiating live chat for concern:', concern);

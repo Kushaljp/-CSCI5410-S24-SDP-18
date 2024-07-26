@@ -3,7 +3,7 @@ import { Box, Card, CardContent, Typography, TextField, Button } from '@mui/mate
 import axios from 'axios';
 import { getUser} from '../../util/user-authentication/AuthenticationUtil';
 import Header from '../Header';
-
+// This page is for showing all messages of all concerns raised by customer as well as agent can see all the messages replied for all the concerns assigned to them.
 const ShowMessages = () => {
     const [user, setUser] = useState(null);
     const [bookings, setBookings] = useState([]);
@@ -49,7 +49,6 @@ const ShowMessages = () => {
                 const response = await axios.post('https://us-central1-csci-5408-data-management.cloudfunctions.net/getConversation', { chat_id: ref });
                 console.log("Response",response);
                 if (response.status === 200) {
-                  //chatsData[ref] = response.data.messages;
                   chatsData[ref] = Array.isArray(response.data.messages) ? response.data.messages : [];
                 }
                 if(response.status === 404){
@@ -83,7 +82,7 @@ const ShowMessages = () => {
             await axios.post('https://us-central1-csci-5408-data-management.cloudfunctions.net/addMessageToChats', replyMessageRequest );
             setReply((prev) => ({ ...prev, [bookingId]: '' }));
             console.log(bookingId)
-            // Re-fetch chats to display the new message
+            // Fetching chats again to display the new message
             const chatResponse = await axios.post('https://us-central1-csci-5408-data-management.cloudfunctions.net/getConversation', { chat_id: bookingId });
             if (chatResponse.status === 200) {
                 setChats((prev) => ({

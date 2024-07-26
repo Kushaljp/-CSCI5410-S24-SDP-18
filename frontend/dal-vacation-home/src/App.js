@@ -2,9 +2,6 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import Login from './components/user-authentication/Login';
 import Register from './components/user-authentication/Register';
 import AddProperty from './components/AddProperty';
-import RoomDetails from './components/RoomDetails';
-import ListApprovals from './components/ListApprovals';
-import ListRooms from './components/ListRooms';
 import AgentDashboard from './components/dashboard/AgentDashboard';
 import UserDashboard from './components/dashboard/UserDashboard'
 import LandingPage from './components/LandingPage';
@@ -16,6 +13,7 @@ import { isUserLoggedIn } from './util/user-authentication/AuthenticationUtil';
 import FeedbackForm from './components/FeedbackForm';
 import EditProperty from './components/EditProperty';
 import ShowMessages from './components/concerns/ShowMessages';
+import Home from './components/Home';
 
 export const UserContextProvider = createContext();
 
@@ -27,13 +25,13 @@ function App() {
     <UserContextProvider.Provider value={{ isLoggedIn, setIsLoggedIn }}>
       <BrowserRouter>
         <Routes>
+        <Route path="/" element={<Home />} />
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
           <Route path="/agentdashboard" element={<AgentDashboard />} />
           <Route path="/userdashboard" element={<UserDashboard />} />
           <Route path="/addproperty" element={<AddProperty />} />
           <Route path="/editproperty" element={<EditProperty />} />
-          <Route path="/room/:id" element={<RoomDetails />} />
           <Route path="/landing" element={<LandingPage />} />
           <Route path="/addconcerns" element={<AddConcerns />} />
           <Route path="/feedback" element={<FeedbackForm />} />

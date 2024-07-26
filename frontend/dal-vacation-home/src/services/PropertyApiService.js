@@ -107,116 +107,7 @@ export const fetchAllProperties = async () => {
 
         console.log('Transformed Properties:', transformedProperties);
         console.log("Transformed Properties type:",typeof(transformedProperties));
-        /*
-        response.data: {
-    "Count": 2,
-    "Items": [
-        {
-            "agentPool": {
-                "S": ""
-            },
-            "propertyId": {
-                "S": "P112"
-            },
-            "roomType": {
-                "S": "2 Bedroom"
-            },
-            "roomNumber": {
-                "N": "112"
-            },
-            "occupancy": {
-                "N": "4"
-            },
-            "ownerId": {
-                "S": ""
-            },
-            "features": {
-                "S": "Heater,TV,Wi-fi"
-            }
-        },
-        {
-            "agentPool": {
-                "S": "['tom.brown@example.com', 'john.doe@example.com']"
-            },
-            "propertyId": {
-                "S": "P3"
-            },
-            "roomType": {
-                "S": "1 Bedroom"
-            },
-            "roomNumber": {
-                "N": "102"
-            },
-            "occupancy": {
-                "N": "2"
-            },
-            "ownerId": {
-                "S": "tom.brown@example.com"
-            },
-            "features": {
-                "S": "['Heater', 'Wi-Fi', 'TV]"
-            }
-        }
-    ],
-    "ScannedCount": 2
-}
-        response.data.Items: [
-    {
-        "agentPool": {
-            "S": ""
-        },
-        "propertyId": {
-            "S": "P112"
-        },
-        "roomType": {
-            "S": "2 Bedroom"
-        },
-        "roomNumber": {
-            "N": "112"
-        },
-        "occupancy": {
-            "N": "4"
-        },
-        "ownerId": {
-            "S": ""
-        },
-        "features": {
-            "S": "Heater,TV,Wi-fi"
-        }
-    },
-    {
-        "agentPool": {
-            "S": "['tom.brown@example.com', 'john.doe@example.com']"
-        },
-        "propertyId": {
-            "S": "P3"
-        },
-        "roomType": {
-            "S": "1 Bedroom"
-        },
-        "roomNumber": {
-            "N": "102"
-        },
-        "occupancy": {
-            "N": "2"
-        },
-        "ownerId": {
-            "S": "tom.brown@example.com"
-        },
-        "features": {
-            "S": "['Heater', 'Wi-Fi', 'TV]"
-        }
-    }
-]
-
-        */
-
-        // if (!response.ok) {
-        //     throw new Error('Network response was not ok');
-        // }
-
-        // const properties = await response.json();
-        // console.log(typeof(properties),properties)
+      
         return transformedProperties;
     } catch (error) {
         console.error('Failed to fetch properties:', error);
@@ -230,7 +121,6 @@ export const fetchPropertyData = async (propertyId) => {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
-                // Add any necessary headers, like Authorization
             },
         });
 

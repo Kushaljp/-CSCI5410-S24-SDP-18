@@ -10,6 +10,9 @@ import { encryptCipherText, formatSecurityQA } from '../../util/user-authenticat
 import { getUserData, saveUserRegistration } from '../../services/AuthenticationApiService';
 import { DEFAULT_FIRST_FACTOR_AUTH, DEFAULT_SECOND_FACTOR_AUTH, DEFAULT_THIRD_FACTOR_AUTH } from '../../util/Constants';
 import {useNavigate} from 'react-router-dom';
+import Header from '../Header';
+import { publishMessage, subscribeUser } from '../../services/NotificationApiService';
+import axios from 'axios';
 
 export default function Register() {
   const [authStep, setAuthStep] = useState(0);
@@ -63,7 +66,9 @@ export default function Register() {
       if(response.status === 200){
         console.log("Data updated to BigQuery successfully.")
       }
-      alert("User registered")
+      subscribeUser(firstFactorAuthData.email)
+      publishMessage(firstFactorAuthData.email,"You are successfully registered.")
+      // alert("User registered")
       navigate('/login')
     } else {
       setShowAlert(true)
@@ -73,6 +78,7 @@ export default function Register() {
 
   return (
     <>
+      <Header user={null} />
       <Typography variant="h6" sx={{ display: 'flex', justifyContent: 'center', paddingBottom: '5vh', fontWeight: 'bold' }}>Register</Typography>
       {showAlert &&
         <Container maxWidth="xs" sx={{ py: '3%' }}>
