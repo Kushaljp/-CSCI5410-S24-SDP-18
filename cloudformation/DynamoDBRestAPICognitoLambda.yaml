@@ -997,6 +997,163 @@ Resources:
         ResponseParameters:
           method.response.header.Access-Control-Allow-Origin: false
 
+  ## Booking Resource and Methods For setting isApproved Flag based on bookingReferenceNumber
+  BookingResourceSetIsApprovedFlag:
+    Type: 'AWS::ApiGateway::Resource'
+    Properties:
+      ParentId: !Ref BookingResource
+      PathPart: 'setIsApproved'
+      RestApiId: !Ref DalVacationHomeAPIs
+  
+  OptionsMethodBookingResourceSetIsApprovedFlag:
+    Type: AWS::ApiGateway::Method
+    Properties:
+      RestApiId: !Ref DalVacationHomeAPIs
+      ResourceId: !Ref BookingResourceSetIsApprovedFlag
+      HttpMethod: OPTIONS
+      AuthorizationType: NONE
+      Integration:
+        IntegrationResponses:
+        - StatusCode: 200
+          ResponseParameters:
+            method.response.header.Access-Control-Allow-Headers: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'"
+            method.response.header.Access-Control-Allow-Methods: "'GET,POST,OPTIONS'"
+            method.response.header.Access-Control-Allow-Origin: "'http://localhost:3000'"
+          ResponseTemplates:
+            application/json: ''
+        PassthroughBehavior: WHEN_NO_MATCH
+        RequestTemplates:
+          application/json: '{"statusCode": 200}'
+        Type: MOCK
+      MethodResponses:
+      - StatusCode: 200
+        ResponseModels:
+          application/json: 'Empty'
+        ResponseParameters:
+          method.response.header.Access-Control-Allow-Headers: false
+          method.response.header.Access-Control-Allow-Methods: false
+          method.response.header.Access-Control-Allow-Origin: false
+
+  SetIsApprovedFlagBasedOnBookingReferenceNumber:
+    Type: AWS::ApiGateway::Method
+    Properties:
+      RestApiId: !Ref DalVacationHomeAPIs
+      ResourceId: !Ref BookingResourceSetIsApprovedFlag
+      HttpMethod: PUT
+      AuthorizationType: NONE
+      Integration:
+        IntegrationHttpMethod: 'POST'
+        Type: AWS
+        Credentials: !Ref LabRoleARN
+        Uri:
+          Fn::Sub: arn:aws:apigateway:${AWS::Region}:dynamodb:action/UpdateItem
+        RequestTemplates:
+          application/json: |
+            {
+              "TableName":"booking",
+              "Key":{
+                  "bookingReferenceNumber":{
+                    "S":"$input.path('$.bookingReferenceNumber')"
+                  }
+              },
+              "UpdateExpression":"SET isApproved = :isApproved",
+              "ExpressionAttributeValues":{
+                  ":isApproved":{
+                    "BOOL":"$input.path('$.isApproved')"
+                  }
+              }
+            }
+        IntegrationResponses:
+        - StatusCode: 200
+          ResponseParameters:
+            method.response.header.Access-Control-Allow-Origin: "'http://localhost:3000'"
+          ResponseTemplates:
+            application/json: ''
+      MethodResponses:
+      - StatusCode: 200
+        ResponseParameters:
+          method.response.header.Access-Control-Allow-Origin: false
+
+  ## Booking Resource and Methods For setting agent and creation date based on bookingReferenceNumber
+  BookingResourceSetAgentAndCreationDate:
+    Type: 'AWS::ApiGateway::Resource'
+    Properties:
+      ParentId: !Ref BookingResource
+      PathPart: 'setAgent'
+      RestApiId: !Ref DalVacationHomeAPIs
+  
+  OptionsMethodBookingResourceSetAgentAndCreationDate:
+    Type: AWS::ApiGateway::Method
+    Properties:
+      RestApiId: !Ref DalVacationHomeAPIs
+      ResourceId: !Ref BookingResourceSetAgentAndCreationDate
+      HttpMethod: OPTIONS
+      AuthorizationType: NONE
+      Integration:
+        IntegrationResponses:
+        - StatusCode: 200
+          ResponseParameters:
+            method.response.header.Access-Control-Allow-Headers: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'"
+            method.response.header.Access-Control-Allow-Methods: "'GET,POST,OPTIONS'"
+            method.response.header.Access-Control-Allow-Origin: "'http://localhost:3000'"
+          ResponseTemplates:
+            application/json: ''
+        PassthroughBehavior: WHEN_NO_MATCH
+        RequestTemplates:
+          application/json: '{"statusCode": 200}'
+        Type: MOCK
+      MethodResponses:
+      - StatusCode: 200
+        ResponseModels:
+          application/json: 'Empty'
+        ResponseParameters:
+          method.response.header.Access-Control-Allow-Headers: false
+          method.response.header.Access-Control-Allow-Methods: false
+          method.response.header.Access-Control-Allow-Origin: false
+
+  SetAgentAndCreationDateBasedOnBookingReferenceNumber:
+    Type: AWS::ApiGateway::Method
+    Properties:
+      RestApiId: !Ref DalVacationHomeAPIs
+      ResourceId: !Ref BookingResourceSetAgentAndCreationDate
+      HttpMethod: PUT
+      AuthorizationType: NONE
+      Integration:
+        IntegrationHttpMethod: 'POST'
+        Type: AWS
+        Credentials: !Ref LabRoleARN
+        Uri:
+          Fn::Sub: arn:aws:apigateway:${AWS::Region}:dynamodb:action/UpdateItem
+        RequestTemplates:
+          application/json: |
+            {
+                "TableName": "booking",
+                "Key": {
+                    "bookingReferenceNumber": {
+                        "S": "$input.path('$.bookingReferenceNumber')"
+                    }
+                },
+                "UpdateExpression": "SET agentId = :agentId, creationDate = :creationDate",
+                "ExpressionAttributeValues": {
+                    ":agentId": {
+                        "S": "$input.path('$.agentId')"
+                    },
+                    ":creationDate": {
+                        "S": "$input.path('$.creationDate')"
+                    }
+                }
+            }
+        IntegrationResponses:
+        - StatusCode: 200
+          ResponseParameters:
+            method.response.header.Access-Control-Allow-Origin: "'http://localhost:3000'"
+          ResponseTemplates:
+            application/json: ''
+      MethodResponses:
+      - StatusCode: 200
+        ResponseParameters:
+          method.response.header.Access-Control-Allow-Origin: false
+
   ## Booking Resource and Methods for fetching data based on userId
   BookingResourceUserId:
     Type: 'AWS::ApiGateway::Resource'
@@ -1252,8 +1409,16 @@ Resources:
       - OptionsMethodBookingResource
       - GetAllBookingsMethod
       - SaveBookingMethod
+	    - OptionsMethodBookingResourceBookingReferenceNumber
+	    - GetAllBookingsBasedOnBookingReferenceNumber
       - OptionsMethodBookingResourceAgentIdIsApproved
       - GetAllBookingsMethodBasedOnAgentIdIsApproved
+	    - OptionsMethodBookingResourceSetIsApprovedFlag
+	    - SetIsApprovedFlagBasedOnBookingReferenceNumber
+	    - OptionsMethodBookingResourceSetAgentAndCreationDate
+	    - SetAgentAndCreationDateBasedOnBookingReferenceNumber
+	    - OptionsMethodBookingResourceUserId
+	    - GetAllBookingsMethodBasedOnUserId
       - OptionsMethodSecondFactorAuthLambdaResource
       - SecondFactorAuthMethod
       - OptionsMethodThirdFactorAuthLambdaResource
