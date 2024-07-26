@@ -12,6 +12,7 @@ const AddMessages = ({concern}) => {
 
     const fetchMessages = async () => {
         try {
+            console.log("Concern received:::",concern);
             setConcernData(concern)
             console.log("Concerns detail in Add Messages:",concern)
             const response = await axios.post('https://us-central1-csci-5408-data-management.cloudfunctions.net/getConversation',{ "chat_id": concern.booking_reference } );
@@ -34,6 +35,7 @@ const AddMessages = ({concern}) => {
                 "sender": concernData.customer_email,
                 "message": message
             }
+            console.log("Request for Adding Messages::::",request)
             await axios.post('https://us-central1-csci-5408-data-management.cloudfunctions.net/addMessageToChats', request);
             setMessage('');
             fetchMessages()
