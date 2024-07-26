@@ -4,7 +4,7 @@ import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import dayjs from 'dayjs';
 
-const PropertyCard = ({ user, property, onApprove, onBook }) => {
+const PropertyCard = ({ user, property, onApprove, onBook, handleDecline }) => {
   const [fromDate, setFromDate] = useState(dayjs().hour(9).minute(0));
   const [toDate, setToDate] = useState(dayjs().hour(9).minute(0));
 
@@ -67,8 +67,11 @@ const PropertyCard = ({ user, property, onApprove, onBook }) => {
             <Typography variant="body2" color="text.secondary">
               To Date: {property.toDate}
             </Typography>
-            <Button variant="contained" color="primary" onClick={() => onApprove(property.bookingReferenceNumber)}>
+            <Button variant="contained" color="primary" onClick={() => onApprove(property.bookingReferenceNumber, property.userId)}>
               Approve
+            </Button>
+            <Button variant="contained" color="primary" onClick={() => handleDecline(property.bookingReferenceNumber, property.userId)}>
+              Decline
             </Button>
           </>
         ) : null}

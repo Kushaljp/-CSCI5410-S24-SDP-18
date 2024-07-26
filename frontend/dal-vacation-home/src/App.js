@@ -9,7 +9,7 @@ import AddConcerns from './components/concerns/AddConcerns';
 import SubscribeConcerns from './components/concerns/SubscribeConcerns';
 import Chatbot from './components/Chatbot';
 import { createContext, useState } from 'react';
-import { isUserLoggedIn } from './util/user-authentication/AuthenticationUtil';
+import { getUser, isUserLoggedIn } from './util/user-authentication/AuthenticationUtil';
 import FeedbackForm from './components/FeedbackForm';
 import EditProperty from './components/EditProperty';
 import ShowMessages from './components/concerns/ShowMessages';
@@ -28,15 +28,15 @@ function App() {
         <Route path="/" element={<Home />} />
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
-          <Route path="/agentdashboard" element={<AgentDashboard />} />
-          <Route path="/userdashboard" element={<UserDashboard />} />
-          <Route path="/addproperty" element={<AddProperty />} />
-          <Route path="/editproperty" element={<EditProperty />} />
-          <Route path="/landing" element={<LandingPage />} />
-          <Route path="/addconcerns" element={<AddConcerns />} />
-          <Route path="/feedback" element={<FeedbackForm />} />
-          <Route path="/subscribedconcerns" element={<SubscribeConcerns />} />
-          <Route path="/showmessages" element={<ShowMessages />} />
+          <Route path="/agentdashboard" element={isLoggedIn ? <AgentDashboard /> : <Login/>} />
+          <Route path="/userdashboard" element={isLoggedIn ? <UserDashboard /> : <Login/>} />
+          <Route path="/addproperty" element={isLoggedIn ? <AddProperty /> : <Login/>} />
+          <Route path="/editproperty" element={isLoggedIn ? <EditProperty /> : <Login/>} />
+          <Route path="/landing" element={isLoggedIn ? <LandingPage /> : <Login/>} />
+          <Route path="/addconcerns" element={isLoggedIn ? <AddConcerns /> : <Login/>} />
+          <Route path="/feedback" element={isLoggedIn ? <FeedbackForm /> : <Login/>} />
+          <Route path="/subscribedconcerns" element={isLoggedIn ? <SubscribeConcerns /> : <Login/>} />
+          <Route path="/mychats" element={isLoggedIn ? <ShowMessages /> : <Login/>} />
         </Routes>
         <Chatbot />
       </BrowserRouter>

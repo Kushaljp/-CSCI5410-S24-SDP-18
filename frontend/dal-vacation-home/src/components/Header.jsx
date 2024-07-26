@@ -43,18 +43,18 @@ const Header = ({user}) => {
               <Button color="inherit" component={Link} to="/agentdashboard">Agent Dashboard</Button>
               <Button color="inherit" component={Link} to="/addproperty">Add Property</Button>
               <Button color="inherit" component={Link} to="/editproperty">Edit Property</Button>
-              <Button color="inherit" component={Link} to="/showmessages">Show Messages</Button>
+              <Button color="inherit" component={Link} to="/mychats">My Chats</Button>
               <Button color="inherit" onClick={handleLogout}>Logout</Button>
             </>
           )}
 
           {isLoggedIn && user?.role === 'guest' && (
             <>
-              <Button color="inherit" component={Link} to="/">Home</Button>
+              <Button color="inherit" component={Link} to="/landing">Home</Button>
               <Button color="inherit" component={Link} to="/userdashboard">User Dashboard</Button>
               <Button color="inherit" component={Link} to="/addconcerns">Concerns</Button>
               <Button color="inherit" component={Link} to="/feedback">Feedback</Button>
-              <Button color="inherit" component={Link} to="/showmessages">Show Messages</Button>
+              <Button color="inherit" component={Link} to="/mychats">My Chats</Button>
               <Button color="inherit" onClick={handleLogout}>Logout</Button>
             </>
           )}

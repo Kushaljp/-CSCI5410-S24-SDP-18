@@ -148,6 +148,6 @@ export const saveFeedback = async (data, navigate) => {
         if(response.status === 200){
         console.log("Data updated to BigQuery successfully.")
         }
-        navigate("/login")
+        navigate("/landing")
       } catch (error) {}
 }

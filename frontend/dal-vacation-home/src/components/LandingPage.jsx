@@ -55,7 +55,7 @@ const LandingPage = () => {
         return <Typography color="error">Error: {error.message}</Typography>;
       }
 
-      const handleApprove = async (BookingReferenceNo) => {
+      const handleApprove = async (BookingReferenceNo, userId) => {
         try {
           console.log("Handle Approve called...",BookingReferenceNo);
           const response = await axios.post('https://pf8bgxkwz5.execute-api.us-east-1.amazonaws.com/prod/approveBooking', {"booking_reference":BookingReferenceNo });
@@ -65,13 +65,33 @@ const LandingPage = () => {
             console.log(response);
             setBookingRefNumber(BookingReferenceNo)
             setBookingApproved(true)
-            publishMessage(user.email, "Your booking with booking reference no:"+ {BookingReferenceNo} + " is approved.")
+            let msg = "Your booking is approved for booking reference no " + BookingReferenceNo;
+            publishMessage(userId, msg)
             setData((prevData) => prevData.filter(item => item.BookingReferenceNo !== BookingReferenceNo));
             // setData((prevData) => prevData.filter(item => item.id !== id));
           }
         } catch (error) {
           console.error('Error approving booking:', error);
         }
+        window.location.reload();
+      };
+
+      const handleDecline = async (BookingReferenceNo, userId) => {
+        try {
+          console.log("Handle decline called...",BookingReferenceNo);
+          const response = await axios.delete('https://vrnylsjiye.execute-api.us-east-1.amazonaws.com/prod/booking/' + BookingReferenceNo);
+          console.log(response)
+          if (response.status === 200) {
+            // setMessage('Booking approved for Booking Reference No:'+ BookingReferenceNo);
+            let msg = "Your booking is declined for booking reference no " + BookingReferenceNo;
+            publishMessage(userId, msg)
+            setData((prevData) => prevData.filter(item => item.BookingReferenceNo !== BookingReferenceNo));
+            // setData((prevData) => prevData.filter(item => item.id !== id));
+          }
+        } catch (error) {
+          console.error('Error approving booking:', error);
+        }
+        window.location.reload();
       };
 
       const generateRefCode = async(roomDetails,userName,fromDate,toDate) => {
@@ -137,7 +157,7 @@ const LandingPage = () => {
          <Grid container spacing={3}>
       {data.map((item) => (
         <Grid item xs={12} sm={6} md={4} key={item.propertyId || item.BookingReferenceNo}>
-          <PropertyCard user={userData} property={item} onBook={generateRefCode} onApprove={handleApprove} onEdit={handleEdit}/>
+          <PropertyCard user={userData} property={item} onBook={generateRefCode} onApprove={handleApprove} onEdit={handleEdit} handleDecline={handleDecline} />
         </Grid>
       ))}
     </Grid>

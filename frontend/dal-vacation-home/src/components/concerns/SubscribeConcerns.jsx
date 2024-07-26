@@ -3,12 +3,14 @@ import { Grid, CircularProgress, Typography, Card, CardContent, Button } from '@
 import Header from '../Header';
 import axios from 'axios';
 import AddMessages from './AddMessages';
+import { getUser } from '../../util/user-authentication/AuthenticationUtil';
 // This page is for subscribe concerns. After user has raised concern, they are given an option for a live chat.
 const SubscribeConcerns = () => {
     const [concern, setConcern] = useState({});
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [chatInitialized, setChatInitialized] = useState(false);
+    const [user, setUser] = useState(() => getUser())
 
     // Fetching raised concern by the user.
     useEffect(() => {
@@ -65,7 +67,7 @@ const SubscribeConcerns = () => {
 
     return (
         <>
-        <Header />
+        <Header user={user} />
             {!chatInitialized ? ( 
             <Grid container spacing={3} style={{ marginTop: '20px' }}>
                 <Grid item xs={12} sm={6} md={4}>

@@ -118,7 +118,7 @@ Resources:
           ResponseParameters:
             method.response.header.Access-Control-Allow-Headers: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'"
             method.response.header.Access-Control-Allow-Methods: "'GET,POST,OPTIONS'"
-            method.response.header.Access-Control-Allow-Origin: "'http://localhost:3000'"
+            method.response.header.Access-Control-Allow-Origin: "'https://dalvacationhome-sdp18-3en3jcc6tq-ue.a.run.app'"
           ResponseTemplates:
             application/json: ''
         PassthroughBehavior: WHEN_NO_MATCH
@@ -155,7 +155,7 @@ Resources:
         IntegrationResponses:
         - StatusCode: 200
           ResponseParameters:
-            method.response.header.Access-Control-Allow-Origin: "'http://localhost:3000'"
+            method.response.header.Access-Control-Allow-Origin: "'https://dalvacationhome-sdp18-3en3jcc6tq-ue.a.run.app'"
           ResponseTemplates:
             application/json: ''
       MethodResponses:
@@ -207,7 +207,7 @@ Resources:
         IntegrationResponses:
         - StatusCode: 200
           ResponseParameters:
-            method.response.header.Access-Control-Allow-Origin: "'http://localhost:3000'"
+            method.response.header.Access-Control-Allow-Origin: "'https://dalvacationhome-sdp18-3en3jcc6tq-ue.a.run.app'"
           ResponseTemplates:
             application/json: ''
       MethodResponses:
@@ -236,7 +236,7 @@ Resources:
           ResponseParameters:
             method.response.header.Access-Control-Allow-Headers: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'"
             method.response.header.Access-Control-Allow-Methods: "'GET,POST,OPTIONS'"
-            method.response.header.Access-Control-Allow-Origin: "'http://localhost:3000'"
+            method.response.header.Access-Control-Allow-Origin: "'https://dalvacationhome-sdp18-3en3jcc6tq-ue.a.run.app'"
           ResponseTemplates:
             application/json: ''
         PassthroughBehavior: WHEN_NO_MATCH
@@ -279,7 +279,7 @@ Resources:
         IntegrationResponses:
         - StatusCode: 200
           ResponseParameters:
-            method.response.header.Access-Control-Allow-Origin: "'http://localhost:3000'"
+            method.response.header.Access-Control-Allow-Origin: "'https://dalvacationhome-sdp18-3en3jcc6tq-ue.a.run.app'"
           ResponseTemplates:
             application/json: ''
       MethodResponses:
@@ -308,7 +308,7 @@ Resources:
           ResponseParameters:
             method.response.header.Access-Control-Allow-Headers: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'"
             method.response.header.Access-Control-Allow-Methods: "'PUT,OPTIONS'"
-            method.response.header.Access-Control-Allow-Origin: "'http://localhost:3000'"
+            method.response.header.Access-Control-Allow-Origin: "'https://dalvacationhome-sdp18-3en3jcc6tq-ue.a.run.app'"
           ResponseTemplates:
             application/json: ''
         PassthroughBehavior: WHEN_NO_MATCH
@@ -356,7 +356,7 @@ Resources:
         IntegrationResponses:
         - StatusCode: 200
           ResponseParameters:
-            method.response.header.Access-Control-Allow-Origin: "'http://localhost:3000'"
+            method.response.header.Access-Control-Allow-Origin: "'https://dalvacationhome-sdp18-3en3jcc6tq-ue.a.run.app'"
           ResponseTemplates:
             application/json: ''
       MethodResponses:
@@ -387,7 +387,7 @@ Resources:
           ResponseParameters:
             method.response.header.Access-Control-Allow-Headers: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'"
             method.response.header.Access-Control-Allow-Methods: "'GET,POST,OPTIONS'"
-            method.response.header.Access-Control-Allow-Origin: "'http://localhost:3000'"
+            method.response.header.Access-Control-Allow-Origin: "'https://dalvacationhome-sdp18-3en3jcc6tq-ue.a.run.app'"
           ResponseTemplates:
             application/json: ''
         PassthroughBehavior: WHEN_NO_MATCH
@@ -424,7 +424,7 @@ Resources:
         IntegrationResponses:
         - StatusCode: 200
           ResponseParameters:
-            method.response.header.Access-Control-Allow-Origin: "'http://localhost:3000'"
+            method.response.header.Access-Control-Allow-Origin: "'https://dalvacationhome-sdp18-3en3jcc6tq-ue.a.run.app'"
           ResponseTemplates:
             application/json: ''
       MethodResponses:
@@ -476,7 +476,7 @@ Resources:
         IntegrationResponses:
         - StatusCode: 200
           ResponseParameters:
-            method.response.header.Access-Control-Allow-Origin: "'http://localhost:3000'"
+            method.response.header.Access-Control-Allow-Origin: "'https://dalvacationhome-sdp18-3en3jcc6tq-ue.a.run.app'"
           ResponseTemplates:
             application/json: ''
       MethodResponses:
@@ -507,7 +507,7 @@ Resources:
           ResponseParameters:
             method.response.header.Access-Control-Allow-Headers: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'"
             method.response.header.Access-Control-Allow-Methods: "'GET,POST,OPTIONS'"
-            method.response.header.Access-Control-Allow-Origin: "'http://localhost:3000'"
+            method.response.header.Access-Control-Allow-Origin: "'https://dalvacationhome-sdp18-3en3jcc6tq-ue.a.run.app'"
           ResponseTemplates:
             application/json: ''
         PassthroughBehavior: WHEN_NO_MATCH
@@ -544,7 +544,7 @@ Resources:
         IntegrationResponses:
         - StatusCode: 200
           ResponseParameters:
-            method.response.header.Access-Control-Allow-Origin: "'http://localhost:3000'"
+            method.response.header.Access-Control-Allow-Origin: "'https://dalvacationhome-sdp18-3en3jcc6tq-ue.a.run.app'"
           ResponseTemplates:
             application/json: ''
       MethodResponses:
@@ -593,7 +593,7 @@ Resources:
         IntegrationResponses:
         - StatusCode: 200
           ResponseParameters:
-            method.response.header.Access-Control-Allow-Origin: "'http://localhost:3000'"
+            method.response.header.Access-Control-Allow-Origin: "'https://dalvacationhome-sdp18-3en3jcc6tq-ue.a.run.app'"
           ResponseTemplates:
             application/json: ''
       MethodResponses:
@@ -624,7 +624,7 @@ Resources:
           ResponseParameters:
             method.response.header.Access-Control-Allow-Headers: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'"
             method.response.header.Access-Control-Allow-Methods: "'GET,POST,OPTIONS'"
-            method.response.header.Access-Control-Allow-Origin: "'http://localhost:3000'"
+            method.response.header.Access-Control-Allow-Origin: "'https://dalvacationhome-sdp18-3en3jcc6tq-ue.a.run.app'"
           ResponseTemplates:
             application/json: ''
         PassthroughBehavior: WHEN_NO_MATCH
@@ -661,7 +661,7 @@ Resources:
         IntegrationResponses:
         - StatusCode: 200
           ResponseParameters:
-            method.response.header.Access-Control-Allow-Origin: "'http://localhost:3000'"
+            method.response.header.Access-Control-Allow-Origin: "'https://dalvacationhome-sdp18-3en3jcc6tq-ue.a.run.app'"
           ResponseTemplates:
             application/json: ''
       MethodResponses:
@@ -716,7 +716,7 @@ Resources:
         IntegrationResponses:
         - StatusCode: 200
           ResponseParameters:
-            method.response.header.Access-Control-Allow-Origin: "'http://localhost:3000'"
+            method.response.header.Access-Control-Allow-Origin: "'https://dalvacationhome-sdp18-3en3jcc6tq-ue.a.run.app'"
           ResponseTemplates:
             application/json: ''
       MethodResponses:
@@ -747,7 +747,7 @@ Resources:
           ResponseParameters:
             method.response.header.Access-Control-Allow-Headers: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'"
             method.response.header.Access-Control-Allow-Methods: "'GET,POST,OPTIONS'"
-            method.response.header.Access-Control-Allow-Origin: "'http://localhost:3000'"
+            method.response.header.Access-Control-Allow-Origin: "'https://dalvacationhome-sdp18-3en3jcc6tq-ue.a.run.app'"
           ResponseTemplates:
             application/json: ''
         PassthroughBehavior: WHEN_NO_MATCH
@@ -784,7 +784,7 @@ Resources:
         IntegrationResponses:
         - StatusCode: 200
           ResponseParameters:
-            method.response.header.Access-Control-Allow-Origin: "'http://localhost:3000'"
+            method.response.header.Access-Control-Allow-Origin: "'https://dalvacationhome-sdp18-3en3jcc6tq-ue.a.run.app'"
           ResponseTemplates:
             application/json: ''
       MethodResponses:
@@ -842,7 +842,7 @@ Resources:
         IntegrationResponses:
         - StatusCode: 200
           ResponseParameters:
-            method.response.header.Access-Control-Allow-Origin: "'http://localhost:3000'"
+            method.response.header.Access-Control-Allow-Origin: "'https://dalvacationhome-sdp18-3en3jcc6tq-ue.a.run.app'"
           ResponseTemplates:
             application/json: ''
       MethodResponses:
@@ -871,7 +871,7 @@ Resources:
           ResponseParameters:
             method.response.header.Access-Control-Allow-Headers: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'"
             method.response.header.Access-Control-Allow-Methods: "'GET,POST,OPTIONS'"
-            method.response.header.Access-Control-Allow-Origin: "'http://localhost:3000'"
+            method.response.header.Access-Control-Allow-Origin: "'https://dalvacationhome-sdp18-3en3jcc6tq-ue.a.run.app'"
           ResponseTemplates:
             application/json: ''
         PassthroughBehavior: WHEN_NO_MATCH
@@ -914,7 +914,41 @@ Resources:
         IntegrationResponses:
         - StatusCode: 200
           ResponseParameters:
-            method.response.header.Access-Control-Allow-Origin: "'http://localhost:3000'"
+            method.response.header.Access-Control-Allow-Origin: "'https://dalvacationhome-sdp18-3en3jcc6tq-ue.a.run.app'"
+          ResponseTemplates:
+            application/json: ''
+      MethodResponses:
+      - StatusCode: 200
+        ResponseParameters:
+          method.response.header.Access-Control-Allow-Origin: false
+
+  DeleteBookingBasedOnBookingReferenceNumber:
+    Type: AWS::ApiGateway::Method
+    Properties:
+      RestApiId: !Ref DalVacationHomeAPIs
+      ResourceId: !Ref BookingResourceBookingReferenceNumber
+      HttpMethod: DELETE
+      AuthorizationType: NONE
+      Integration:
+        IntegrationHttpMethod: 'POST'
+        Type: AWS
+        Credentials: !Ref LabRoleARN
+        Uri:
+          Fn::Sub: arn:aws:apigateway:${AWS::Region}:dynamodb:action/DeleteItem
+        RequestTemplates:
+          application/json: |
+            {
+              "TableName":"booking",
+              "Key":{
+                  "bookingReferenceNumber":{
+                    "S": "$input.params('bookingReferenceNumber')"
+                  }
+              }
+            }
+        IntegrationResponses:
+        - StatusCode: 200
+          ResponseParameters:
+            method.response.header.Access-Control-Allow-Origin: "'https://dalvacationhome-sdp18-3en3jcc6tq-ue.a.run.app'"
           ResponseTemplates:
             application/json: ''
       MethodResponses:
@@ -943,7 +977,7 @@ Resources:
           ResponseParameters:
             method.response.header.Access-Control-Allow-Headers: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'"
             method.response.header.Access-Control-Allow-Methods: "'GET,POST,OPTIONS'"
-            method.response.header.Access-Control-Allow-Origin: "'http://localhost:3000'"
+            method.response.header.Access-Control-Allow-Origin: "'https://dalvacationhome-sdp18-3en3jcc6tq-ue.a.run.app'"
           ResponseTemplates:
             application/json: ''
         PassthroughBehavior: WHEN_NO_MATCH
@@ -989,7 +1023,7 @@ Resources:
         IntegrationResponses:
         - StatusCode: 200
           ResponseParameters:
-            method.response.header.Access-Control-Allow-Origin: "'http://localhost:3000'"
+            method.response.header.Access-Control-Allow-Origin: "'https://dalvacationhome-sdp18-3en3jcc6tq-ue.a.run.app'"
           ResponseTemplates:
             application/json: ''
       MethodResponses:
@@ -1018,7 +1052,7 @@ Resources:
           ResponseParameters:
             method.response.header.Access-Control-Allow-Headers: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'"
             method.response.header.Access-Control-Allow-Methods: "'GET,POST,OPTIONS'"
-            method.response.header.Access-Control-Allow-Origin: "'http://localhost:3000'"
+            method.response.header.Access-Control-Allow-Origin: "'https://dalvacationhome-sdp18-3en3jcc6tq-ue.a.run.app'"
           ResponseTemplates:
             application/json: ''
         PassthroughBehavior: WHEN_NO_MATCH
@@ -1066,7 +1100,7 @@ Resources:
         IntegrationResponses:
         - StatusCode: 200
           ResponseParameters:
-            method.response.header.Access-Control-Allow-Origin: "'http://localhost:3000'"
+            method.response.header.Access-Control-Allow-Origin: "'https://dalvacationhome-sdp18-3en3jcc6tq-ue.a.run.app'"
           ResponseTemplates:
             application/json: ''
       MethodResponses:
@@ -1095,7 +1129,7 @@ Resources:
           ResponseParameters:
             method.response.header.Access-Control-Allow-Headers: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'"
             method.response.header.Access-Control-Allow-Methods: "'GET,POST,OPTIONS'"
-            method.response.header.Access-Control-Allow-Origin: "'http://localhost:3000'"
+            method.response.header.Access-Control-Allow-Origin: "'https://dalvacationhome-sdp18-3en3jcc6tq-ue.a.run.app'"
           ResponseTemplates:
             application/json: ''
         PassthroughBehavior: WHEN_NO_MATCH
@@ -1146,7 +1180,7 @@ Resources:
         IntegrationResponses:
         - StatusCode: 200
           ResponseParameters:
-            method.response.header.Access-Control-Allow-Origin: "'http://localhost:3000'"
+            method.response.header.Access-Control-Allow-Origin: "'https://dalvacationhome-sdp18-3en3jcc6tq-ue.a.run.app'"
           ResponseTemplates:
             application/json: ''
       MethodResponses:
@@ -1175,7 +1209,7 @@ Resources:
           ResponseParameters:
             method.response.header.Access-Control-Allow-Headers: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'"
             method.response.header.Access-Control-Allow-Methods: "'GET,POST,OPTIONS'"
-            method.response.header.Access-Control-Allow-Origin: "'http://localhost:3000'"
+            method.response.header.Access-Control-Allow-Origin: "'https://dalvacationhome-sdp18-3en3jcc6tq-ue.a.run.app'"
           ResponseTemplates:
             application/json: ''
         PassthroughBehavior: WHEN_NO_MATCH
@@ -1218,7 +1252,7 @@ Resources:
         IntegrationResponses:
         - StatusCode: 200
           ResponseParameters:
-            method.response.header.Access-Control-Allow-Origin: "'http://localhost:3000'"
+            method.response.header.Access-Control-Allow-Origin: "'https://dalvacationhome-sdp18-3en3jcc6tq-ue.a.run.app'"
           ResponseTemplates:
             application/json: ''
       MethodResponses:
@@ -1282,7 +1316,7 @@ Resources:
           ResponseParameters:
             method.response.header.Access-Control-Allow-Headers: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'"
             method.response.header.Access-Control-Allow-Methods: "'POST,OPTIONS'"
-            method.response.header.Access-Control-Allow-Origin: "'http://localhost:3000'"
+            method.response.header.Access-Control-Allow-Origin: "'https://dalvacationhome-sdp18-3en3jcc6tq-ue.a.run.app'"
           ResponseTemplates:
             application/json: ''
         PassthroughBehavior: WHEN_NO_MATCH
@@ -1316,7 +1350,7 @@ Resources:
         IntegrationResponses:
         - StatusCode: 200
           ResponseParameters:
-            method.response.header.Access-Control-Allow-Origin: "'http://localhost:3000'"
+            method.response.header.Access-Control-Allow-Origin: "'https://dalvacationhome-sdp18-3en3jcc6tq-ue.a.run.app'"
           ResponseTemplates:
             application/json: ''
       MethodResponses:
@@ -1345,7 +1379,7 @@ Resources:
           ResponseParameters:
             method.response.header.Access-Control-Allow-Headers: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'"
             method.response.header.Access-Control-Allow-Methods: "'POST,OPTIONS'"
-            method.response.header.Access-Control-Allow-Origin: "'http://localhost:3000'"
+            method.response.header.Access-Control-Allow-Origin: "'https://dalvacationhome-sdp18-3en3jcc6tq-ue.a.run.app'"
           ResponseTemplates:
             application/json: ''
         PassthroughBehavior: WHEN_NO_MATCH
@@ -1379,7 +1413,7 @@ Resources:
         IntegrationResponses:
         - StatusCode: 200
           ResponseParameters:
-            method.response.header.Access-Control-Allow-Origin: "'http://localhost:3000'"
+            method.response.header.Access-Control-Allow-Origin: "'https://dalvacationhome-sdp18-3en3jcc6tq-ue.a.run.app'"
           ResponseTemplates:
             application/json: ''
       MethodResponses:
@@ -1423,6 +1457,7 @@ Resources:
       - SecondFactorAuthMethod
       - OptionsMethodThirdFactorAuthLambdaResource
       - ThirdFactorAuthMethod
+      - DeleteBookingBasedOnBookingReferenceNumber
     Type: 'AWS::ApiGateway::Deployment'
     Properties:
       RestApiId: !Ref DalVacationHomeAPIs
