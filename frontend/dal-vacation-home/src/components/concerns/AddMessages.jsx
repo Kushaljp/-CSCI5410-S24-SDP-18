@@ -1,12 +1,15 @@
 import React, { useState,useEffect } from 'react';
 import { Box, TextField, Button, Typography, List, ListItem } from '@mui/material';
 import axios from 'axios';
-
-
+import Header from '../Header';
+import { getUser } from '../../util/user-authentication/AuthenticationUtil';
+// This page is for adding chat messages to the users.
 const AddMessages = ({concern}) => {
     const [message, setMessage] = useState('');
     const [messages, setMessages] = useState([]);
     const [concernData,setConcernData] = useState(null);
+    const user = getUser();
+
     const fetchMessages = async () => {
         try {
             setConcernData(concern)
@@ -31,13 +34,7 @@ const AddMessages = ({concern}) => {
                 "sender": concernData.customer_email,
                 "message": message
             }
-            // const request = {
-            //     "chat_id": concern.booking_reference,
-            //     "sender": concern.customer_email,
-            //     "message": message
-            // }
             await axios.post('https://us-central1-csci-5408-data-management.cloudfunctions.net/addMessageToChats', request);
-            // setMessages([...messages, message]);
             setMessage('');
             fetchMessages()
             
@@ -47,6 +44,8 @@ const AddMessages = ({concern}) => {
     };
 
     return (
+        <>
+        <Header user={user}/>
         <Box p={2}>
             <Typography variant="h4" mb={2}>Chat</Typography>
             <Box display="flex" mb={2}>
@@ -69,14 +68,14 @@ const AddMessages = ({concern}) => {
             {messages.length > 0 ? (
                 messages.map((msg, index) => (
                     <ListItem key={index}>
-                        {msg.sender === concern.customer_email ? 'You: ' : 'Agent: '}
-                         <Typography>{msg.message}</Typography>
+                         <Typography>{user?.email}:{msg.message}</Typography>
                     </ListItem>
                 ))): (
                     <Typography>No messages yet</Typography>
                 )}
             </List>
         </Box>
+        </>
     );
 };
 

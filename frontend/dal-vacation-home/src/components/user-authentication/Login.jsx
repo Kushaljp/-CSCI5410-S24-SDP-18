@@ -11,6 +11,8 @@ import { DEFAULT_FIRST_FACTOR_AUTH, DEFAULT_SECOND_FACTOR_AUTH, DEFAULT_THIRD_FA
 import {useNavigate} from 'react-router-dom';
 import { UserContextProvider } from '../../App';
 import axios from 'axios';
+import { publishMessage } from '../../services/NotificationApiService';
+import Header from '../Header';
 
 function Login() {
   const { isLoggedIn, setIsLoggedIn } = useContext(UserContextProvider);
@@ -82,8 +84,10 @@ function Login() {
       if(response.status === 200){
         console.log("Data updated to BigQuery successfully.")
       }
-      alert("Successful login")
+      // alert("Successful login")
       setIsLoggedIn(true)
+      console.log("Emailing successful login>>>>")
+      publishMessage(firstFactorAuthData.email,"You have logged in successfully.")
       navigate('/landing')
       window.location.reload();
     } else if (verifiedThirdFactorAuth === "unverified") {
@@ -111,6 +115,7 @@ function Login() {
 
   return (
     <>
+      <Header user={null} />
       <Typography variant="h6" sx={{ display: 'flex', justifyContent: 'center', paddingBottom: '5vh', fontWeight: 'bold' }}>Login</Typography>
       {showAlert &&
         <Container maxWidth="xs" sx={{ py: '3%' }}>

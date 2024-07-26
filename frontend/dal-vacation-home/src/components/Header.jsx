@@ -5,17 +5,13 @@ import { getUser } from '../util/user-authentication/AuthenticationUtil';
 import {AgentDashboard} from '../components/dashboard/AgentDashboard';
 import {UserDashboard} from '../components/dashboard/UserDashboard';
 import { UserContextProvider } from '../App';
-
+import axios from 'axios';
 
 const Header = ({user}) => {
   const { isLoggedIn, setIsLoggedIn } = useContext(UserContextProvider);
   const navigate = useNavigate();
-  console.log("Header user data:",user)
-  //const user = getUser();
-  //  user = {"email": "abcd@example.com",
-  //   "firstname": "ABCD",
-  //   "lastname": "EFGH",
-  //   "role": "agent"};
+  console.log("Header user data:",user);
+  
   const handleLogout = () => {
     const response = axios.get('https://us-central1-csci-5408-data-management.cloudfunctions.net/loadBigQuery');
       console.log("Big Query data updated API Response:",response);
@@ -32,43 +28,37 @@ const Header = ({user}) => {
     <AppBar position="static">
       <Container maxWidth="lg">
         <Toolbar>
-        <Button color="inherit" component={Link} to="/landing">
-            Home
-          </Button>
-          {user?.role === 'agent' ? (
+        {!isLoggedIn && (
             <>
-              <Button color="inherit" component={Link} to="/agentdashboard">
-                Agent Dashboard
-              </Button>
-              <Button color="inherit" component={Link} to="/addproperty">
-                Add Property
-              </Button>
-              <Button color="inherit" component={Link} to="/editproperty">
-                Edit Property
-              </Button>
-              <Button color="inherit" component={Link} to="/showmessages">
-                Show Messages
-              </Button>
-            </>
-          ) : (
-            <>
-              <Button color="inherit" component={Link} to="/userdashboard">
-                Student Dashboard
-              </Button>
-              <Button color="inherit" component={Link} to="/addconcerns">
-                Concerns
-              </Button>
-              <Button color="inherit" component={Link} to="/feedback">
-                Feedback
-              </Button>
-              <Button color="inherit" component={Link} to="/showmessages">
-                Show Messages
-              </Button>
+              <Button color="inherit" component={Link} to="/">Home</Button>
+              <Button color="inherit" component={Link} to="/userdashboard">View Room Feedback and Polarity</Button>
+              <Button color="inherit" component={Link} to="/login">Login</Button>
+              <Button color="inherit" component={Link} to="/register">Register</Button>
             </>
           )}
-          <Button color="inherit" onClick={handleLogout}>
-            Logout
-          </Button>
+
+          {isLoggedIn && user?.role === 'agent' && (
+            <>
+              <Button color="inherit" component={Link} to="/landing">Home</Button>
+              <Button color="inherit" component={Link} to="/agentdashboard">Agent Dashboard</Button>
+              <Button color="inherit" component={Link} to="/addproperty">Add Property</Button>
+              <Button color="inherit" component={Link} to="/editproperty">Edit Property</Button>
+              <Button color="inherit" component={Link} to="/showmessages">Show Messages</Button>
+              <Button color="inherit" onClick={handleLogout}>Logout</Button>
+            </>
+          )}
+
+          {isLoggedIn && user?.role === 'guest' && (
+            <>
+              <Button color="inherit" component={Link} to="/">Home</Button>
+              <Button color="inherit" component={Link} to="/userdashboard">User Dashboard</Button>
+              <Button color="inherit" component={Link} to="/addconcerns">Concerns</Button>
+              <Button color="inherit" component={Link} to="/feedback">Feedback</Button>
+              <Button color="inherit" component={Link} to="/showmessages">Show Messages</Button>
+              <Button color="inherit" onClick={handleLogout}>Logout</Button>
+            </>
+          )}
+          
         </Toolbar>
       </Container>
     </AppBar>

@@ -5,6 +5,7 @@ import { Grid, Card, CardContent, Typography, CircularProgress, TextField, Butto
 import {getPropertiesByRole} from '../services/PropertyApiService';
 import PropertyCard from './PropertyCard';
 import Header from './Header';
+import {publishMessage} from '../services/NotificationApiService';
 
 const LandingPage = () => {
 
@@ -58,14 +59,14 @@ const LandingPage = () => {
         try {
           console.log("Handle Approve called...",BookingReferenceNo);
           const response = await axios.post('https://pf8bgxkwz5.execute-api.us-east-1.amazonaws.com/prod/approveBooking', {"booking_reference":BookingReferenceNo });
-          // setData((prevData) => prevData.filter(item => item.BookingReferenceNo !== BookingReferenceNo));
           // const response = await axios.post('https://example.com/approve', { id });
           if (response.status === 200) {
             // setMessage('Booking approved for Booking Reference No:'+ BookingReferenceNo);
             console.log(response);
             setBookingRefNumber(BookingReferenceNo)
             setBookingApproved(true)
-            // publishMessage(user.email, "Your booking with booking reference no:"+ {BookingReferenceNo} + " is approved.")
+            publishMessage(user.email, "Your booking with booking reference no:"+ {BookingReferenceNo} + " is approved.")
+            setData((prevData) => prevData.filter(item => item.BookingReferenceNo !== BookingReferenceNo));
             // setData((prevData) => prevData.filter(item => item.id !== id));
           }
         } catch (error) {
@@ -79,26 +80,21 @@ const LandingPage = () => {
           // const { fromDate, toDate } = dates[roomDetails.id] || {};
           // console.log(roomDetails.roomNumber,roomDetails.propertyId,fromDate,toDate);
           const payload = { booking_request: {
-            UserName: userName,
-            RoomNumber: parseInt(roomDetails.roomNumber),
-            PropertyId: roomDetails.propertyId,
-            IsApproved: 0,
-            FromDate: fromDate.toISOString(),
-            ToDate: toDate.toISOString()
+            userId: userName,
+            roomNumber: parseInt(roomDetails.roomNumber),
+            propertyId: roomDetails.propertyId,
+            isApproved: false,
+            fromDate: fromDate.toISOString(),
+            toDate: toDate.toISOString()
           }};
           const response = await axios.post('https://pf8bgxkwz5.execute-api.us-east-1.amazonaws.com/prod/bookingRoom',
            payload, {headers:{'Content-Type':'application/json'},}
           );
-          // const response = await axios.post(
-          //   'https://vyu0d2o6y6.execute-api.us-east-1.amazonaws.com/dev/bookingRoom',
-          //   payload,
-          //   { headers: { 'Content-Type': 'application/json' } }
-          // );
           console.log("Response:",response.data,typeof(response.data));
           const responseBody = JSON.parse(response.data.body);
           if (responseBody.bookingReferenceId) {
             setBookingRefNumber(responseBody.bookingReferenceId);
-            // publishMessage(userData.email,"Thank you for booking the room. You will get an booking approval message once the booking is approved by an agent. This is the booking reference number:" + responseBody.bookingReferenceId + ". If you have any concerns then you can use the concern form and agent will help you solve the query.")
+            publishMessage(userData.email,"Thank you for booking the room. You will get an booking approval message once the booking is approved by an agent. This is the booking reference number:" + responseBody.bookingReferenceId + ". If you have any concerns then you can use the concern form and agent will help you solve the query.")
           } else {
             setBookingRefNumber(''); 
           }

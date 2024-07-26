@@ -1,35 +1,54 @@
+// pages/Home.jsx
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Grid, Card, CardContent, Typography, CircularProgress, Box } from '@mui/material';
-import Header from './Header';
+import Header from '../components/Header'; 
 
 const Home = () => {
   const [bookings, setBookings] = useState([]);
-  const [feedback, setFeedback] = useState([]);
+  const [properties, setProperties] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchProperties = async () => {
       try {
         const propertyResponse = await axios.get('https://vrnylsjiye.execute-api.us-east-1.amazonaws.com/prod/property');
-        console.log("Property details:",propertyResponse)
-        const propertiesData = propertyResponse.data.Items;
-        const transformedProperties = propertiesData.map(property => ({
-            agentPool: property.agentPool?.S || '',
-            propertyId: property.propertyId?.S || '',
-            roomType: property.roomType?.S || '',
-            roomNumber: property.roomNumber?.N || -1,
-            occupancy: property.occupancy?.N || -1,
-            ownerId: property.ownerId?.S || '',
-            features: property.features?.S || '',
+        console.log("Property details:", propertyResponse);
+        const propertiesData = propertyResponse.data.Items.map(property => ({
+          agentPool: property.agentPool?.S || '',
+          propertyId: property.propertyId?.S || '',
+          roomType: property.roomType?.S || '',
+          roomNumber: property.roomNumber?.N || -1,
+          occupancy: property.occupancy?.N || -1,
+          ownerId: property.ownerId?.S || '',
+          features: property.features?.S || '',
         }));
-        setBookings(transformedProperties);
+        setProperties(propertiesData);
+      } catch (err) {
+        setError(err);
+      }
+    };
 
-        
-        // const feedbackResponse = await axios.get('https://api.example.com/feedback');
-        // setFeedback(feedbackResponse.data);
+    const fetchBookings = async () => {
+      try {
+        const bookingResponse = await axios.get('https://vrnylsjiye.execute-api.us-east-1.amazonaws.com/prod/booking');
+        console.log("Booking details:", bookingResponse);
+        const bookingData = bookingResponse.data.Items.map(booking => ({
+          propertyId: booking.propertyId?.S || '',
+          fromDate: booking.fromDate?.S || '',
+          toDate: booking.toDate?.S || '',
+        }));
+        setBookings(bookingData);
+      } catch (err) {
+        setError(err);
+      }
+    };
 
+    const fetchData = async () => {
+      try {
+        await fetchProperties();
+        await fetchBookings();
       } catch (err) {
         setError(err);
       } finally {
@@ -39,6 +58,16 @@ const Home = () => {
 
     fetchData();
   }, []);
+
+  const getUnavailableDates = (propertyId) => {
+    console.log(bookings.fromDate,bookings.toDate)
+    return bookings
+      .filter(booking => booking.propertyId === propertyId)
+      .map(booking => ({
+        fromDate: booking.fromDate,
+        toDate: booking.toDate
+      }));
+  };
 
   if (loading) {
     return <CircularProgress />;
@@ -50,36 +79,26 @@ const Home = () => {
 
   return (
     <>
-      <Header />
+      <Header user={null} />
       <Box mt={3}>
         <Typography variant="h4" gutterBottom>Room Bookings</Typography>
         <Grid container spacing={3}>
-          {bookings.map((booking) => (
-            <Grid item xs={12} sm={6} md={4} key={booking.propertyId}>
+          {properties.map((property) => (
+            <Grid item xs={12} sm={6} md={4} key={property.propertyId}>
               <Card>
                 <CardContent>
-                  <Typography variant="h6">Room Number: {booking.roomNumber}</Typography>
-                  <Typography>Room Type: {booking.roomType}</Typography>
-                  <Typography>Occupancy: {booking.occupancy}</Typography>
-                  <Typography>Features:  {booking.features}</Typography>
-                  <Typography>From: {new Date(booking.fromDate).toLocaleDateString()}</Typography>
-                  <Typography>To: {new Date(booking.toDate).toLocaleDateString()}</Typography>
-                </CardContent>
-              </Card>
-            </Grid>
-          ))}
-        </Grid>
-      </Box>
-      <Box mt={3}>
-        <Typography variant="h4" gutterBottom>Room Feedback</Typography>
-        <Grid container spacing={3}>
-          {feedback.map((item) => (
-            <Grid item xs={12} sm={6} md={4} key={item.feedbackId}>
-              <Card>
-                <CardContent>
-                  <Typography variant="h6">Room Number: {item.roomNumber}</Typography>
-                  <Typography>Feedback: {item.feedbackText}</Typography>
-                  <Typography>Rating: {item.rating}</Typography>
+                  <Typography variant="h6">Room Number: {property.roomNumber}</Typography>
+                  <Typography>Room Type: {property.roomType}</Typography>
+                  <Typography>Occupancy: {property.occupancy}</Typography>
+                  <Typography>Features: {property.features}</Typography>
+                  <Typography variant="h6">Unavailable Dates:</Typography>
+                  {getUnavailableDates(property.propertyId).length > 0 ? (
+                    getUnavailableDates(property.propertyId).map((date, index) => (
+                      <Typography key={index}>From: {date.fromDate} To: {date.toDate}</Typography>
+                    ))
+                  ) : (
+                    <Typography>All bookings available</Typography>
+                  )}
                 </CardContent>
               </Card>
             </Grid>

@@ -5,19 +5,19 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import dayjs from 'dayjs';
 
 const PropertyCard = ({ user, property, onApprove, onBook }) => {
-  const [fromDate, setFromDate] = useState(dayjs().hour(12).minute(0));
-  const [toDate, setToDate] = useState(dayjs().hour(12).minute(0));
+  const [fromDate, setFromDate] = useState(dayjs().hour(9).minute(0));
+  const [toDate, setToDate] = useState(dayjs().hour(9).minute(0));
 
   const handleFromDateChange = (newValue) => {
-    setFromDate(newValue.hour(12).minute(0));
+    setFromDate(newValue.hour(9).minute(0));
     if (newValue.isAfter(toDate)) {
-      setToDate(newValue.hour(12).minute(0));
+      setToDate(newValue.hour(9).minute(0));
     }
   };
 
   const handleToDateChange = (newValue) => {
     if (newValue.isAfter(fromDate)) {
-      setToDate(newValue.hour(12).minute(0));
+      setToDate(newValue.hour(9).minute(0));
     }
   };
 
@@ -59,10 +59,7 @@ const PropertyCard = ({ user, property, onApprove, onBook }) => {
               Booking Reference No: {property.bookingReferenceNumber}
             </Typography>
             <Typography variant="body2" color="text.secondary">
-              User Email: {property.userEmail}
-            </Typography>
-            <Typography variant="body2" color="text.secondary">
-              Customer Name: {property.userName}
+              User Email: {property.userId}
             </Typography>
             <Typography variant="body2" color="text.secondary">
               From Date: {property.fromDate}
