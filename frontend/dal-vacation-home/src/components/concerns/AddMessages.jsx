@@ -6,13 +6,11 @@ import axios from 'axios';
 const AddMessages = ({concern}) => {
     const [message, setMessage] = useState('');
     const [messages, setMessages] = useState([]);
-
+    const [concernData,setConcernData] = useState(null);
     const fetchMessages = async () => {
         try {
+            setConcernData(concern)
             console.log("Concerns detail in Add Messages:",concern)
-            // {
-            //     params: { "chat_id": concern.booking_reference }
-            // }
             const response = await axios.post('https://us-central1-csci-5408-data-management.cloudfunctions.net/getConversation',{ "chat_id": concern.booking_reference } );
             console.log("Response:::",response)
             setMessages(response.data.messages || []);
@@ -29,10 +27,15 @@ const AddMessages = ({concern}) => {
     const handleAddMessage = async () => {
         try {
             const request = {
-                "chat_id": concern.booking_reference,
-                "sender": concern.customer_email,
+                "chat_id": concernData.booking_reference,
+                "sender": concernData.customer_email,
                 "message": message
             }
+            // const request = {
+            //     "chat_id": concern.booking_reference,
+            //     "sender": concern.customer_email,
+            //     "message": message
+            // }
             await axios.post('https://us-central1-csci-5408-data-management.cloudfunctions.net/addMessageToChats', request);
             // setMessages([...messages, message]);
             setMessage('');

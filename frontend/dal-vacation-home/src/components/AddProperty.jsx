@@ -7,7 +7,7 @@ import axios from 'axios';
 
 const AddProperty = () => {
 
-    const [data,setData] = useState({ownerId:'',features:'',occupancy:'',roomNumber:'',roomType:'',agentPool:'',price:""});
+    const [data,setData] = useState({ownerId:'',features:'',occupancy:'',roomNumber:'',roomType:'',agentPool:[],price:0});
     const [user,setUser] = useState(null);
     const [message,setMessage] = useState('');
     const [agents,setAgents] = useState([]);
@@ -55,54 +55,37 @@ const AddProperty = () => {
         const {name,value} = event.target;
         setData(prevData => ({
             ...prevData,
-            [name]:value
+            [name]: name === 'price' ? Number(value) : value
         }));
     };
 
-    // const handleMultipleAgentChange = (event) => {
-    //   const {
+    const handleMultipleAgentChange = (event) => {
+      const { target: { value } } = event;
+      const selected = typeof value === 'string' ? value.split(',') : value;
+      setSelectedAgents(selected);
+      setData(prevData => ({
+        ...prevData,
+        agentPool: selected
+      }));
+      //   const {
     //     target: { value },
-    //   } = event;
-    //   setData( prevData => ({
-    //     ...prevData,
-    //     agentPool: typeof value === 'string' ? value.split(',') : value
-    // }));
-    // };
-    // const handleMultipleAgentChange = (event) => {
-    //   const {
-    //     target: { value },
-    //   } = event;
-    //   setAgents(
-    //     typeof value === 'string' ? value.split(',') : value,
-    //   );
-    // };
-    // const handleMultipleAgentChange = (event) => {
-    //   const {
-    //     target: { value }
     //   } = event;
     //   setSelectedAgents(
     //     typeof value === 'string' ? value.split(',') : value,
     //   );
     //   setData(prevData => ({
     //     ...prevData,
-    //     agentPool: typeof value === 'string' ? value.split(',') : value,
-    //   }));
-    // };
-
-    const handleMultipleAgentChange = (event) => {
-      const {
-        target: { value },
-      } = event;
-      setSelectedAgents(
-        typeof value === 'string' ? value.split(',') : value,
-      );
+    //     agentPool: typeof value === 'string' ? value.split(',') : value
+    // }));
     };
   
 
     const addproperty = async () => {
         try{
         const ownerId = user?.email;
-        const propertyData = {...data, ownerId:ownerId,propertyId:'P'+data.roomNumber};
+        console.log("Add Property data which is to be added:",data);
+        const propertyData = {...data, ownerId:ownerId,propertyId:'P'+data.roomNumber,agentPool: data.agentPool.join(',')};
+        console.log("Property data:",propertyData)
         const response = await fetch('https://vrnylsjiye.execute-api.us-east-1.amazonaws.com/prod/property',{method:'POST',headers:{'Content-Type':'application/json'},
             body:JSON.stringify(propertyData)});
         if(!response.ok){
@@ -112,8 +95,7 @@ const AddProperty = () => {
         console.log("Adding property response:",result)
         setMessage('Property added successfully.')
         console.log(user);
-        console.log(data);
-        setData({ownerId:'',features:'',occupancy:'',roomNumber:'',roomType:'',agentPool:'',price:''});
+        setData({ownerId:'',features:'',occupancy:'',roomNumber:'',roomType:'',agentPool:[],price:0});
         }
         catch(error){
           console.log('Error:',error)
@@ -157,6 +139,7 @@ const AddProperty = () => {
           multiple
           value={selectedAgents}
           onChange={handleMultipleAgentChange}
+          input={<OutlinedInput label="Name" />}
           
         >
           {agents.map((agent) => (

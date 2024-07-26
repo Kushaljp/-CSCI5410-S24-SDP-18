@@ -17,6 +17,11 @@ const Header = ({user}) => {
   //   "lastname": "EFGH",
   //   "role": "agent"};
   const handleLogout = () => {
+    const response = axios.get('https://us-central1-csci-5408-data-management.cloudfunctions.net/loadBigQuery');
+      console.log("Big Query data updated API Response:",response);
+      if(response.status === 200){
+        console.log("Data updated to BigQuery successfully.")
+      }
     sessionStorage.removeItem("user");
     setIsLoggedIn(false)
     navigate('/login');
@@ -41,6 +46,9 @@ const Header = ({user}) => {
               <Button color="inherit" component={Link} to="/editproperty">
                 Edit Property
               </Button>
+              <Button color="inherit" component={Link} to="/showmessages">
+                Show Messages
+              </Button>
             </>
           ) : (
             <>
@@ -49,6 +57,12 @@ const Header = ({user}) => {
               </Button>
               <Button color="inherit" component={Link} to="/addconcerns">
                 Concerns
+              </Button>
+              <Button color="inherit" component={Link} to="/feedback">
+                Feedback
+              </Button>
+              <Button color="inherit" component={Link} to="/showmessages">
+                Show Messages
               </Button>
             </>
           )}

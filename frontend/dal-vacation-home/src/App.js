@@ -14,6 +14,8 @@ import Chatbot from './components/Chatbot';
 import { createContext, useState } from 'react';
 import { isUserLoggedIn } from './util/user-authentication/AuthenticationUtil';
 import FeedbackForm from './components/FeedbackForm';
+import EditProperty from './components/EditProperty';
+import ShowMessages from './components/concerns/ShowMessages';
 
 export const UserContextProvider = createContext();
 
@@ -30,11 +32,13 @@ function App() {
           <Route path="/agentdashboard" element={<AgentDashboard />} />
           <Route path="/userdashboard" element={<UserDashboard />} />
           <Route path="/addproperty" element={<AddProperty />} />
+          <Route path="/editproperty" element={<EditProperty />} />
           <Route path="/room/:id" element={<RoomDetails />} />
           <Route path="/landing" element={<LandingPage />} />
           <Route path="/addconcerns" element={<AddConcerns />} />
           <Route path="/feedback" element={<FeedbackForm />} />
           <Route path="/subscribedconcerns" element={<SubscribeConcerns />} />
+          <Route path="/showmessages" element={<ShowMessages />} />
         </Routes>
         <Chatbot />
       </BrowserRouter>
