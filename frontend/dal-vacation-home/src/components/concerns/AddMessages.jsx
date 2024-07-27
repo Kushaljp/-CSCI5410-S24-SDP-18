@@ -47,7 +47,6 @@ const AddMessages = ({concern}) => {
 
     return (
         <>
-        <Header user={user}/>
         <Box p={2}>
             <Typography variant="h4" mb={2}>Chat</Typography>
             <Box display="flex" mb={2}>

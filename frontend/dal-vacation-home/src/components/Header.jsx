@@ -6,6 +6,7 @@ import {AgentDashboard} from '../components/dashboard/AgentDashboard';
 import {UserDashboard} from '../components/dashboard/UserDashboard';
 import { UserContextProvider } from '../App';
 import axios from 'axios';
+import { setIsUserLoggedIn } from '../services/AuthenticationApiService';
 
 const Header = ({user}) => {
   const { isLoggedIn, setIsLoggedIn } = useContext(UserContextProvider);
@@ -18,6 +19,17 @@ const Header = ({user}) => {
       if(response.status === 200){
         console.log("Data updated to BigQuery successfully.")
       }
+    
+    let userLoggedInData = {
+      "email": user.email,
+      "isLoggedIn": false
+    }
+    setIsUserLoggedIn(userLoggedInData)
+    const res = axios.get('https://us-central1-csci-5408-data-management.cloudfunctions.net/loadBigQuery');
+    console.log("Big Query data updated API Response:",res);
+    if(res.status === 200){
+      console.log("Data updated to BigQuery successfully.")
+    }
     sessionStorage.removeItem("user");
     setIsLoggedIn(false)
     navigate('/login');
@@ -43,18 +55,18 @@ const Header = ({user}) => {
               <Button color="inherit" component={Link} to="/agentdashboard">Agent Dashboard</Button>
               <Button color="inherit" component={Link} to="/addproperty">Add Property</Button>
               <Button color="inherit" component={Link} to="/editproperty">Edit Property</Button>
-              <Button color="inherit" component={Link} to="/showmessages">Show Messages</Button>
+              <Button color="inherit" component={Link} to="/mychats">My Chats</Button>
               <Button color="inherit" onClick={handleLogout}>Logout</Button>
             </>
           )}
 
           {isLoggedIn && user?.role === 'guest' && (
             <>
-              <Button color="inherit" component={Link} to="/">Home</Button>
+              <Button color="inherit" component={Link} to="/landing">Home</Button>
               <Button color="inherit" component={Link} to="/userdashboard">User Dashboard</Button>
               <Button color="inherit" component={Link} to="/addconcerns">Concerns</Button>
               <Button color="inherit" component={Link} to="/feedback">Feedback</Button>
-              <Button color="inherit" component={Link} to="/showmessages">Show Messages</Button>
+              <Button color="inherit" component={Link} to="/mychats">My Chats</Button>
               <Button color="inherit" onClick={handleLogout}>Logout</Button>
             </>
           )}

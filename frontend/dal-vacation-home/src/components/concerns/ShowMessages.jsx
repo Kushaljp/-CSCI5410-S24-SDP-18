@@ -108,7 +108,7 @@ const ShowMessages = () => {
         <>
             <Header user={user} />
             <Box sx={{ padding: 3 }}>
-                {bookings.map((bookingId) => (
+                {bookings ? bookings.map((bookingId) => (
                     <Card key={bookingId} sx={{ marginBottom: 2 }}>
                         <CardContent>
                             <Typography variant="h6">Booking Reference: {bookingId}</Typography>
@@ -134,7 +134,7 @@ const ShowMessages = () => {
                             </Button>
                         </CardContent>
                     </Card>
-                ))}
+                )) : <Typography>No messages available</Typography>}
             </Box>
         </>
     );

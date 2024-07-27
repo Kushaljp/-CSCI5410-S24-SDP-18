@@ -51,14 +51,14 @@ const AddConcerns = () => {
     try {
       console.log({
         "booking_reference": selectedRefNumber,
-        "customer_name": userData.firstname,
-        "customer_email": userData.lastname,
+        "customer_name": userData.firstname + " " + userData.lastname,
+        "customer_email": userData.email,
         "concern": concern
     });
       const response = await axios.post('https://us-central1-csci-5408-data-management.cloudfunctions.net/publishConcern', {
         "booking_reference": selectedRefNumber,
-        "customer_name": userData.firstname,
-        "customer_email": userData.lastname,
+        "customer_name": userData.firstname + " " + userData.lastname,
+        "customer_email": userData.email,
         "concern": concern
     });
       console.log("Concern published successfully");
