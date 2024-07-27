@@ -29,7 +29,7 @@ function App() {
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
           <Route path="/agentdashboard" element={isLoggedIn ? <AgentDashboard /> : <Login/>} />
-          <Route path="/userdashboard" element={isLoggedIn ? <UserDashboard /> : <Login/>} />
+          <Route path="/userdashboard" element={<UserDashboard />} />
           <Route path="/addproperty" element={isLoggedIn ? <AddProperty /> : <Login/>} />
           <Route path="/editproperty" element={isLoggedIn ? <EditProperty /> : <Login/>} />
           <Route path="/landing" element={isLoggedIn ? <LandingPage /> : <Login/>} />
