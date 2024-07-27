@@ -14,22 +14,16 @@ const Header = ({user}) => {
   console.log("Header user data:",user);
   
   const handleLogout = () => {
-    const response = axios.get('https://us-central1-csci-5408-data-management.cloudfunctions.net/loadBigQuery');
-      console.log("Big Query data updated API Response:",response);
-      if(response.status === 200){
-        console.log("Data updated to BigQuery successfully.")
-      }
-    
     let userLoggedInData = {
       "email": user.email,
       "isLoggedIn": false
     }
     setIsUserLoggedIn(userLoggedInData)
-    const res = axios.get('https://us-central1-csci-5408-data-management.cloudfunctions.net/loadBigQuery');
-    console.log("Big Query data updated API Response:",res);
-    if(res.status === 200){
-      console.log("Data updated to BigQuery successfully.")
-    }
+    const response = axios.get('https://us-central1-csci-5408-data-management.cloudfunctions.net/loadBigQuery');
+      console.log("Big Query data updated API Response:",response);
+      if(response.status === 200){
+        console.log("Data updated to BigQuery successfully.")
+      }
     sessionStorage.removeItem("user");
     setIsLoggedIn(false)
     navigate('/login');
